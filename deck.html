@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
-<title>Как я работаю с Клодом</title>
+<title>Как я пользуюсь Клодом</title>
 <meta name="description" content="Воркшоп для продактов: Обсидиан, Claude Code через терминал, экономия токенов и интерактивный HTML одним запросом." />
 <meta name="theme-color" content="#05070d" />
 <style>
@@ -174,91 +174,70 @@ kbd{font-family:var(--mono);border:1px solid var(--line);border-bottom-width:2px
 <div id="bar"></div>
 
 <div id="deck">
-
   <!-- 1 HERO -->
-  <section class="slide" data-notes="Хук. Пауза после первой фразы. Я продакт, не инженер — и это ключ: если смог я, сможет любой в зале. Не про кодинг, а про рычаг.">
+  <section class="slide" data-notes="Хук. Пауза после первой фразы. Я продакт, не пишу код — если смог я, сможет любой в зале. Это не про кодинг, это про рычаг. Сегодня покажу свой сетап и зачем он вам.">
     <div class="wrap">
-      <div class="kicker r">Практический воркшоп для продактов</div>
-      <h1 class="r">Как я работаю<br><span class="grad">с Клодом</span></h1>
-      <p class="lead r" style="margin-top:26px">Я продакт. Я не пишу код. Но за вечер собираю рабочий продукт, презентацию или прототип — руками ИИ.</p>
+      <div class="kicker r">Практический воркшоп</div>
+      <h1 class="r">Как я пользуюсь<br><span class="grad">Клодом</span></h1>
+      <p class="lead r" style="margin-top:26px">И почему вам тоже стоит. Я продакт — не пишу код. Но за вечер собираю рабочий продукт, лендинг или прототип руками ИИ.</p>
       <div class="badges r">
-        <span class="tag">🧠 Обсидиан</span>
-        <span class="tag">⌨️ Claude Code</span>
-        <span class="tag">🌀 Почему залипает</span>
-        <span class="tag">🔥 Токены</span>
-        <span class="tag">🎁 HTML одним запросом</span>
+        <span class="tag">🧠 Память</span>
+        <span class="tag">⌨️ Терминал</span>
+        <span class="tag">🎯 Метод</span>
+        <span class="tag">🎁 Бонус в конце</span>
       </div>
     </div>
   </section>
 
-  <!-- 2 WHY -->
-  <section class="slide" data-notes="Обещание воркшопа. Не теория про ИИ, а мой реальный сетап. 5 вещей, каждую унесёте и примените завтра. Тайминг ~2 мин.">
+  <!-- 2 ПОЧЕМУ ВАМ НАДО -->
+  <section class="slide" data-notes="Сердце воркшопа. ИИ — не игрушка, а рычаг. Кто научится делегировать ИИ — за вечер делает то, на что уходили недели. Это уже сейчас, а не когда-нибудь. Отставание стоит дорого.">
     <div class="wrap">
-      <div class="kicker r">О чём говорим</div>
-      <h2 class="r">Не «что такое ИИ».<br>А <span class="grad">как я им реально работаю</span>.</h2>
-      <p class="lead r">Мой рабочий сетап без прикрас — инструменты, привычки и грабли. Всё, что унесёте и примените уже завтра.</p>
+      <div class="kicker r">Почему это важно</div>
+      <h2 class="r">ИИ — не игрушка.<br>Это <span class="grad">рычаг</span>.</h2>
+      <p class="lead r">Кто научится ставить задачи ИИ — за вечер делает то, на что раньше уходили недели. Это не «когда-нибудь», это уже сейчас.</p>
+      <div class="grid g3 r">
+        <div class="card" data-tilt><span class="ico">⚡</span><h3>Скорость</h3><p>Недели работы сжимаются в часы</p></div>
+        <div class="card" data-tilt><span class="ico">📈</span><h3>Масштаб</h3><p>Один человек = небольшая команда</p></div>
+        <div class="card" data-tilt><span class="ico">🌍</span><h3>Доступно всем</h3><p>Без кода. Нужен только правильный запрос</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ЧТО МОЖНО -->
+  <section class="slide" data-notes="Разрушаю миф «ИИ = для разработчиков». Поручить можно что угодно, где есть текст, данные или интерфейс. Каждый в зале найдёт своё.">
+    <div class="wrap">
+      <div class="kicker r">Это не только про код</div>
+      <h2 class="r">Что реально <span class="grad">поручить ИИ</span></h2>
       <div class="grid g4 r">
-        <div class="card" data-tilt><span class="num">01</span><span class="ico">🧠</span><h3>Обсидиан</h3><p>Второй мозг и память для ИИ</p></div>
-        <div class="card" data-tilt><span class="num">02</span><span class="ico">⌨️</span><h3>Терминал</h3><p>Claude Code вместо чата</p></div>
-        <div class="card" data-tilt><span class="num">03</span><span class="ico">🌀</span><h3>Залипание</h3><p>Почему тупит и как чинить</p></div>
-        <div class="card" data-tilt><span class="num">04</span><span class="ico">🔥</span><h3>Токены</h3><p>Как не сжечь бюджет</p></div>
+        <div class="card" data-tilt><span class="ico">🧪</span><h3>Прототип</h3><p>Проверить идею руками</p></div>
+        <div class="card" data-tilt><span class="ico">🛬</span><h3>Лендинг</h3><p>Тест спроса без разработки</p></div>
+        <div class="card" data-tilt><span class="ico">📊</span><h3>Аналитика</h3><p>Разобрать данные, собрать дашборд</p></div>
+        <div class="card" data-tilt><span class="ico">📝</span><h3>Тексты и ресёрч</h3><p>Документы, письма, разбор</p></div>
       </div>
+      <p class="lead r" style="margin-top:30px">Продакт, маркетолог, аналитик, саппорт — каждому есть что делегировать.</p>
     </div>
   </section>
 
-  <!-- 3 OBSIDIAN why -->
-  <section class="slide" data-notes="Проблема, которую решает Обсидиан: ИИ забывает всё между сессиями. Каждый раз объясняешь заново. Обсидиан = внешняя память, куда я и ИИ пишем.">
+  <!-- 4 ОБСИДИАН -->
+  <section class="slide" data-notes="Мой сетап, вещь 1. У ИИ нет памяти между сессиями — каждый чат чистый лист. Обсидиан = внешний мозг: заметки в markdown, куда пишу я и сам ИИ. Кидаю папку → он в теме за секунды.">
     <div class="wrap">
-      <div class="kicker r">01 · Обсидиан</div>
-      <h2 class="r">Зачем вообще <span class="grad">Обсидиан</span>?</h2>
-      <p class="lead r">У ИИ нет памяти между сессиями. Каждый новый чат — чистый лист: заново объясняй проект, контекст, решения. Обсидиан — это внешний мозг, который помнит за меня <b class="muted">и за него</b>.</p>
+      <div class="kicker r">Мой сетап · 1</div>
+      <h2 class="r"><span class="grad">Обсидиан</span> — память для ИИ</h2>
+      <p class="lead r">У ИИ нет памяти между сессиями: новый чат — чистый лист. Обсидиан — внешний мозг, куда пишу я и сам ИИ. Кидаю папку → Клод «в теме» за секунды, не пересказываю заново.</p>
       <ul class="list r">
-        <li><span class="b">1</span><span><b>Второй мозг.</b> Заметки, идеи, куски проектов, ссылки — всё в простом markdown, локально, навсегда.</span></li>
-        <li><span class="b">2</span><span><b>Контекст для ИИ.</b> Кидаю папку в Клод — он читает и уже «в теме», не надо пересказывать.</span></li>
-        <li><span class="b">3</span><span><b>Память между сессиями.</b> Итоги, решения, грабли записаны — завтра ИИ продолжает, а не начинает с нуля.</span></li>
+        <li><span class="b">1</span><span><b>Второй мозг.</b> Заметки, идеи, куски проектов — в простом markdown, локально, навсегда.</span></li>
+        <li><span class="b">2</span><span><b>Контекст для ИИ.</b> Не объясняю проект каждый раз — он читает заметки сам.</span></li>
+        <li><span class="b">3</span><span><b>Память между сессиями.</b> Решения записаны — завтра ИИ продолжает, а не начинает с нуля.</span></li>
       </ul>
     </div>
   </section>
 
-  <!-- 4 OBSIDIAN how -->
-  <section class="slide" data-notes="Как это выглядит: markdown-файлы, связи [[]], и главное — ИИ сам пишет в эти заметки. Покажи живой вольт если есть проектор. Это не про красоту, про то что plain text вечен.">
+  <!-- 5 ТЕРМИНАЛ -->
+  <section class="slide" data-notes="Мой сетап, вещь 2. Большинство знает Клода как чат. Я запускаю в терминале — Claude Code. Он видит файлы, правит сам, запускает, деплоит. Дай терминалу допечатать, потом комментируй: результат — не текст, а готовая работа.">
     <div class="wrap">
-      <div class="kicker r">01 · Обсидиан</div>
-      <h2 class="r">Обычные <span class="grad">текстовые файлы</span> — и в этом сила</h2>
-      <div class="grid g3 r">
-        <div class="card" data-tilt><span class="ico">📄</span><h3>Plain markdown</h3><p>Никакого лока. Файлы твои, локальные, откроются через 20 лет. ИИ читает их нативно.</p></div>
-        <div class="card" data-tilt><span class="ico">🔗</span><h3>Связи <code>[[ ]]</code></h3><p>Заметки ссылаются друг на друга. Граф знаний = карта контекста для ИИ.</p></div>
-        <div class="card" data-tilt><span class="ico">🤖</span><h3>ИИ пишет сам</h3><p>Клод сам ведёт заметки: итоги сессий, решения, память проекта. Я только направляю.</p></div>
-      </div>
-      <div class="mono-block r">📁 Vault/<b>Konsol</b>/
-   ├── проект.md        <b>← кто мы, цели, ограничения</b>
-   ├── решения.md       <b>← что решили и почему</b>
-   └── грабли.md        <b>← на чём обожглись</b>
-
-<b>→</b> кидаю папку в Клод — он в контексте за 3 секунды</div>
-    </div>
-  </section>
-
-  <!-- 5 CLAUDE CODE intro -->
-  <section class="slide" data-notes="Переход к главному инструменту. Большинство знает Клода как чат в браузере. Я работаю через терминал — Claude Code. Это не про то что я хакер, это удобнее.">
-    <div class="wrap">
-      <div class="kicker r">02 · Claude Code</div>
-      <h2 class="r">Клод живёт<br>у меня <span class="grad">в терминале</span></h2>
-      <p class="lead r">Большинство знает Клода как чат в браузере. Я запускаю его в терминале — это <b class="muted">Claude Code</b>. Он видит мои файлы, сам их правит, запускает команды и деплоит. Не «подскажи код», а «сделай».</p>
-      <div class="badges r">
-        <span class="tag">видит весь проект</span>
-        <span class="tag">правит файлы сам</span>
-        <span class="tag">запускает команды</span>
-        <span class="tag">помнит контекст</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6 CLAUDE CODE terminal demo -->
-  <section class="slide" data-notes="Живой терминал печатает сам. Дай ему допечатать перед тем как говорить дальше. Смысл: я пишу задачу человеческим языком, он делает реальную работу — не текст в ответ, а изменённые файлы + деплой.">
-    <div class="wrap">
-      <div class="kicker r">02 · Claude Code</div>
-      <h2 class="r">Задача словами → <span class="grad">готовый результат</span></h2>
+      <div class="kicker r">Мой сетап · 2</div>
+      <h2 class="r">Клод в <span class="grad">терминале</span> — делает, а не советует</h2>
+      <p class="lead r">Не чат с копипастом туда-сюда, а Claude Code: видит файлы, правит их сам, запускает команды и деплоит. Задачу пишу словами — получаю готовый результат.</p>
       <div class="term r">
         <div class="bar"><i class="dotr"></i><i class="doty"></i><i class="dotg"></i><span>miron@mac — claude</span></div>
         <div class="body" id="typed"></div>
@@ -266,106 +245,45 @@ kbd{font-family:var(--mono);border:1px solid var(--line);border-bottom-width:2px
     </div>
   </section>
 
-  <!-- 7 CHAT vs TERMINAL -->
-  <section class="slide" data-notes="Почему терминал > чат. Не идеология. Чат = копипаст туда-сюда, ИИ не видит проект целиком. Терминал = ИИ внутри проекта, делает, а не советует. Продакту это даёт скорость прототипа.">
+  <!-- 6 МЕТОД -->
+  <section class="slide" data-notes="Мой сетап, вещь 3 — и главный тейкэвей. ИИ силён ровно настолько, насколько точно просишь. Это навык, который переносится на кого угодно в зале. Плохой результат почти всегда = плохая постановка.">
     <div class="wrap">
-      <div class="kicker r">02 · Claude Code</div>
-      <h2 class="r">Чат в браузере <span class="dim">vs</span> <span class="grad">терминал</span></h2>
-      <div class="grid g2 r">
-        <div class="card" data-tilt style="border-color:rgba(255,120,120,.2)">
-          <span class="ico">💬</span><h3>Чат</h3>
-          <p style="line-height:1.7">• Копипаст кода туда-сюда<br>• Не видит проект целиком<br>• «Вот тебе код» → сам вставляй<br>• Забывает контекст в новой вкладке</p>
-        </div>
-        <div class="card" data-tilt style="border-color:rgba(94,234,212,.3)">
-          <span class="ico">⌨️</span><h3>Терминал (Claude Code)</h3>
-          <p style="line-height:1.7">• Видит и правит файлы сам<br>• Держит в голове весь проект<br>• Делает работу, а не советует<br>• Помнит через заметки и память</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8 WHY STUCK -->
-  <section class="slide" data-notes="Честный слайд. Клод НЕ всегда быстрый. Иногда сидит 5 минут над ерундой. Важно понять почему — тогда не бесишься, а чинишь. Три причины.">
-    <div class="wrap">
-      <div class="kicker r">03 · Залипание</div>
-      <h2 class="r">Почему Клод иногда<br><span class="grad">сидит и тупит</span></h2>
-      <p class="lead r">Это нормально и объяснимо. Три главные причины, почему одна задача занимает у него 5 минут вместо 20 секунд:</p>
-      <div class="grid g3 r">
-        <div class="card" data-tilt><span class="num">причина 1</span><h3>Контекст переполнен</h3><p>Слишком много всего в памяти сессии — он перечитывает гору текста на каждый шаг.</p></div>
-        <div class="card" data-tilt><span class="num">причина 2</span><h3>Задача размыта</h3><p>«Сделай красиво» — он гадает, что ты имел в виду, и пробует варианты вслепую.</p></div>
-        <div class="card" data-tilt><span class="num">причина 3</span><h3>Ходит по кругу</h3><p>Ошибка → фикс → новая ошибка. Застревает в петле проб и правок.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 9 HOW TO FIX STUCK -->
-  <section class="slide" data-notes="Решения зеркалят проблемы. Главная мысль: залипание почти всегда = моя вина в постановке. Чиню вход — и он летает. /clear между задачами это буквально кнопка reset.">
-    <div class="wrap">
-      <div class="kicker r">03 · Залипание</div>
-      <h2 class="r">Как <span class="grad">расклинить</span></h2>
+      <div class="kicker r">Мой сетап · 3</div>
+      <h2 class="r">Главный навык — <span class="grad">ставить задачу</span></h2>
+      <p class="lead r">ИИ настолько хорош, насколько точно ты просишь. Это навык, а не магия — и он переносится на любую роль.</p>
       <ul class="list r">
-        <li><span class="b">→</span><span><b>Чисти контекст.</b> Новая задача — команда <code>/clear</code>. Не таскай хвост прошлого разговора.</span></li>
-        <li><span class="b">→</span><span><b>Ставь задачу конкретно.</b> Не «почини», а «кнопка не кликается на мобиле, вот файл — почему».</span></li>
-        <li><span class="b">→</span><span><b>Дроби большое на шаги.</b> Одна задача = один результат. Слона по кусочкам.</span></li>
-        <li><span class="b">→</span><span><b>Останови и переформулируй.</b> Если пошёл по кругу — Esc, и задай направление заново.</span></li>
+        <li><span class="b">→</span><span><b>Конкретно.</b> Не «сделай красиво», а что именно и зачем.</span></li>
+        <li><span class="b">→</span><span><b>Дай контекст.</b> Файлы, примеры, цель — чем больше вводных, тем точнее.</span></li>
+        <li><span class="b">→</span><span><b>Дроби большое на шаги.</b> Одна задача — один результат.</span></li>
+        <li><span class="b">→</span><span><b>Итерируй.</b> Не то — поправь направление, а не бросай.</span></li>
       </ul>
     </div>
   </section>
 
-  <!-- 10 TOKENS intro -->
-  <section class="slide" data-notes="Токены = деньги и время. Объясни максимально просто: токен ≈ кусочек слова. Каждое слово в диалоге — расход. Чем длиннее контекст, тем дороже и медленнее КАЖДЫЙ шаг. Русский текст жрёт больше.">
+  <!-- 7 ГРАБЛИ -->
+  <section class="slide" data-notes="Честный слайд, чтобы не разочаровались. Три частые грабли и как обойти. Главное: залипание и токены почти всегда лечатся чистым контекстом и точной задачей. И всегда проверяй факты — ИИ уверенно врёт.">
     <div class="wrap">
-      <div class="kicker r">04 · Токены</div>
-      <h2 class="r">Токены — это<br><span class="grad">деньги и время</span></h2>
-      <p class="lead r">Токен ≈ кусочек слова. ИИ платит токенами за всё, что читает и пишет. Чем больше контекст тащишь — тем дороже и <b class="muted">медленнее каждый шаг</b>.</p>
-      <div class="grid g3 r" style="margin-top:40px">
-        <div class="card" data-tilt style="text-align:center"><div class="stat grad" data-count="750">0</div><p style="margin-top:8px">слов ≈ 1000 токенов<br><span class="dim">(на английском)</span></p></div>
-        <div class="card" data-tilt style="text-align:center"><div class="stat grad" data-count="2" data-suffix="×">0</div><p style="margin-top:8px">во столько дороже<br><span class="dim">русский текст</span></p></div>
-        <div class="card" data-tilt style="text-align:center"><div class="stat grad" data-count="100" data-suffix="%">0</div><p style="margin-top:8px">контекста читается<br><span class="dim">заново на каждый шаг</span></p></div>
+      <div class="kicker r">Чтобы не бесило</div>
+      <h2 class="r">3 грабли — и как <span class="grad">обойти</span></h2>
+      <div class="grid g3 r">
+        <div class="card" data-tilt><span class="ico">🌀</span><h3>Залипает</h3><p>Контекст переполнен или задача размыта. Лечится: <b style="color:#c7c7cc">/clear</b> на новую задачу + конкретика.</p></div>
+        <div class="card" data-tilt><span class="ico">🔥</span><h3>Жжёт токены</h3><p>Токен ≈ кусочек слова, платишь за всё. Лечится: модель под задачу, не тащи весь день в одной сессии.</p></div>
+        <div class="card" data-tilt><span class="ico">👻</span><h3>Уверенно врёт</h3><p>Галлюцинации. Лечится: проверяй факты и цифры, не доверяй важное слепо.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- 11 SAVE TOKENS -->
-  <section class="slide" data-notes="Практика экономии. Это то что реально снижает мой счёт. Модель под задачу — самое важное: не бери топ-модель на ерунду. /clear часто. Точный промпт = меньше итераций = меньше токенов.">
-    <div class="wrap">
-      <div class="kicker r">04 · Токены</div>
-      <h2 class="r">Как <span class="grad">не сжечь</span> токены</h2>
-      <div class="grid g2 r">
-        <div class="card" data-tilt><span class="ico">🎯</span><h3>Модель под задачу</h3><p>Простое — на лёгкой модели. Топовую бери только там, где реально сложно. Не стреляй из пушки по воробьям.</p></div>
-        <div class="card" data-tilt><span class="ico">🧹</span><h3><code>/clear</code> между задачами</h3><p>Закончил — очисти контекст. Не тащи весь день в одной сессии: она пухнет и дорожает.</p></div>
-        <div class="card" data-tilt><span class="ico">✍️</span><h3>Точный промпт</h3><p>Чёткая задача = меньше итераций. Каждая переделка вслепую — это лишние токены.</p></div>
-        <div class="card" data-tilt><span class="ico">📎</span><h3>Давай только нужное</h3><p>Не кидай весь проект, если задача в одном файле. Меньше вход — дешевле и быстрее.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 12 MY LOOP -->
-  <section class="slide" data-notes="Собираю всё в один цикл. Это мой реальный рабочий флоу. Обсидиан кормит контекст → терминал делает → результат обратно в заметки → память растёт. Маховик.">
-    <div class="wrap">
-      <div class="kicker r">Сводка</div>
-      <h2 class="r">Мой <span class="grad">рабочий цикл</span></h2>
-      <div class="flow r">
-        <div class="step"><span class="n">01</span><h4>🧠 Контекст</h4><p>Обсидиан кормит ИИ проектом и памятью</p><span class="arrow">→</span></div>
-        <div class="step"><span class="n">02</span><h4>⌨️ Задача</h4><p>Ставлю словами в терминале, конкретно</p><span class="arrow">→</span></div>
-        <div class="step"><span class="n">03</span><h4>⚡ Работа</h4><p>Клод правит файлы, запускает, деплоит</p><span class="arrow">→</span></div>
-        <div class="step"><span class="n">04</span><h4>📝 Память</h4><p>Итоги в заметки — завтра продолжаем</p></div>
-      </div>
-      <p class="lead r" style="margin-top:34px">Маховик: чем больше памяти в Обсидиане — тем умнее ИИ работает завтра.</p>
-    </div>
-  </section>
-
-  <!-- 13 BONUS setup -->
-  <section class="slide" data-notes="Момент вау. Пауза. Задай вопрос залу: как думаете, сколько я делал эту презентацию? Потом раскрой на след слайде.">
+  <!-- 8 БОНУС setup -->
+  <section class="slide" data-notes="Момент вау. Пауза. Спроси зал: как думаете, сколько я делал эту презентацию и в чём? Собери версии, потом раскрой.">
     <div class="wrap" style="text-align:center">
       <div class="kicker r" style="justify-content:center">🎁 Бонус</div>
       <h1 class="r" style="font-size:clamp(34px,6.5vw,92px)">А эту презентацию<br><span class="grad">я не рисовал</span></h1>
-      <p class="lead r" style="margin:26px auto 0;text-align:center">Ни одного слайда вручную. Ни PowerPoint, ни Figma, ни дизайнера.</p>
+      <p class="lead r" style="margin:26px auto 0;text-align:center">Ни PowerPoint, ни Figma, ни дизайнера.</p>
     </div>
   </section>
 
-  <!-- 14 BONUS reveal -->
-  <section class="slide" data-notes="Раскрытие. Всё что видите — один HTML файл, сгенерён Клодом по описанию. Прочитай промпт вслух. Смысл для продакта: прототип, лендинг, дашборд, презентация — за один запрос. Это меняет скорость проверки идей.">
+  <!-- 9 БОНУС reveal -->
+  <section class="slide" data-notes="Раскрытие. Всё это — один HTML-файл, сгенерён Клодом по описанию. Прочитай промпт вслух, нажми «Копировать» — предложи забрать себе. Смысл: прототип, лендинг, дашборд, презентация — за один запрос.">
     <div class="wrap">
       <div class="kicker r">🎁 Бонус · интерактивный HTML одним запросом</div>
       <h2 class="r">Всё это — <span class="grad">один HTML-файл</span> от Клода</h2>
@@ -387,26 +305,26 @@ styles.refero.design, 21st.dev, reactbits.dev).
     </div>
   </section>
 
-  <!-- 15 WHAT IT MEANS -->
-  <section class="slide" data-notes="Перевод на язык продакта. Не про красивые слайды. Про то что цикл проверки идеи сжимается с недель до вечера. Прототип, лендинг для теста спроса, дашборд, интерактивный concept для стейкхолдеров.">
+  <!-- 10 ПОНЕДЕЛЬНИК -->
+  <section class="slide" data-notes="Призыв к действию. Не «попробуйте когда-нибудь», а три конкретных шага на завтра. Чем меньше порог входа — тем больше людей реально начнут.">
     <div class="wrap">
-      <div class="kicker r">Что это даёт продакту</div>
-      <h2 class="r">Идея → <span class="grad">рабочий артефакт</span> за вечер</h2>
-      <div class="grid g4 r">
-        <div class="card" data-tilt><span class="ico">🧪</span><h3>Прототип</h3><p>Проверить идею руками, а не на словах</p></div>
-        <div class="card" data-tilt><span class="ico">🛬</span><h3>Лендинг</h3><p>Тест спроса без разработки</p></div>
-        <div class="card" data-tilt><span class="ico">📊</span><h3>Дашборд</h3><p>Данные наглядно для стейкхолдеров</p></div>
-        <div class="card" data-tilt><span class="ico">🎬</span><h3>Презентация</h3><p>Вот такая — за один запрос</p></div>
+      <div class="kicker r">С чего начать</div>
+      <h2 class="r">Что сделать <span class="grad">завтра</span></h2>
+      <div class="flow r">
+        <div class="step"><span class="n">01</span><h4>🚀 Открой Клода</h4><p>Чат или Claude Code — поставь и залогинься</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">02</span><h4>🧠 Заметка-контекст</h4><p>Опиши свой проект в одном файле для ИИ</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">03</span><h4>🎯 Делегируй одну задачу</h4><p>Реальную, сегодня. Точно поставь — оцени результат</p></div>
       </div>
+      <p class="lead r" style="margin-top:34px">Один вечер эксперимента экономит недели рутины дальше.</p>
     </div>
   </section>
 
-  <!-- 16 CLOSE -->
-  <section class="slide" data-notes="Финал. Главный тейкэвей: ИИ это не про замену продакта, а про рычаг. Кто научится ставить задачи ИИ — обгонит. Спасибо, вопросы.">
+  <!-- 11 ФИНАЛ -->
+  <section class="slide" data-notes="Финал. Главный тейкэвей: ИИ не заменяет тебя — он множит. Кто освоит постановку задач — обгонит. Спасибо, вопросы.">
     <div class="wrap" style="text-align:center">
       <div class="kicker r" style="justify-content:center">Спасибо</div>
       <h1 class="r"><span class="grad">Продукт делают</span><br>вопросом, а не кодом</h1>
-      <p class="lead r" style="margin:26px auto 30px;text-align:center">Кто научится ставить задачи ИИ — соберёт за вечер то, на что раньше уходили недели.</p>
+      <p class="lead r" style="margin:26px auto 30px;text-align:center">ИИ не заменяет тебя — он множит. Кто научится ставить задачи ИИ, обгонит тех, кто ждёт.</p>
       <div class="r"><span class="cta" style="cursor:default">Вопросы? →</span></div>
     </div>
   </section>
@@ -417,7 +335,7 @@ styles.refero.design, 21st.dev, reactbits.dev).
 <div class="nav-zone right" id="navR"></div>
 
 <div id="hud"><div id="dots"></div></div>
-<div id="count">01 / 16</div>
+<div id="count">01 / 11</div>
 <div id="hint"><kbd>←</kbd> <kbd>→</kbd> листать · <kbd>F</kbd> фулскрин · <kbd>S</kbd> заметки</div>
 
 <script>
