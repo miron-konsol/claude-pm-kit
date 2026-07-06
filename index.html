@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Как я работаю с Клодом</title>
+<meta name="description" content="Воркшоп для продактов: как работать с Клодом + витрина скиллов Claude Code для продукта и маркетинга."/>
+<meta name="theme-color" content="#05070d"/>
+<meta property="og:title" content="Как я работаю с Клодом"/>
+<meta property="og:description" content="Воркшоп для продактов + скиллы Claude Code для продукта и маркетинга."/>
+<style>
+:root{
+  --bg:#05070d;--ink:#eef2ff;--muted:#9aa7c7;--dim:#66739a;
+  --cyan:#22d3ee;--violet:#8b5cf6;--mint:#5eead4;
+  --glass:rgba(18,24,42,.5);--glass-brd:rgba(150,170,255,.14);--line:rgba(160,180,255,.12);
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
+  --serif:"Georgia","Times New Roman",ui-serif,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5;display:flex;flex-direction:column;min-height:100vh}
+::selection{background:rgba(94,234,212,.28)}
+
+.aurora{position:fixed;inset:-20%;z-index:0;filter:blur(70px) saturate(140%);opacity:.5;pointer-events:none}
+.aurora span{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:drift 28s ease-in-out infinite}
+.aurora .a{width:52vw;height:52vw;left:-8vw;top:-12vw;background:radial-gradient(circle at 30% 30%,#0891b2,transparent 62%)}
+.aurora .b{width:48vw;height:48vw;right:-8vw;top:6vw;background:radial-gradient(circle at 60% 40%,#7c3aed,transparent 62%);animation-delay:-9s}
+.aurora .c{width:44vw;height:44vw;left:24vw;bottom:-18vw;background:radial-gradient(circle at 50% 50%,#22d3ee,transparent 60%);animation-delay:-16s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,4vh) scale(1.12)}66%{transform:translate(-5vw,-3vh) scale(.94)}}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+.grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:overlay}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.5) 100%)}
+
+main{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:clamp(40px,8vw,90px) clamp(20px,5vw,40px)}
+.wrap{max-width:1000px;width:100%}
+.kicker{font-family:var(--mono);font-size:clamp(11px,1.15vw,14px);letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);display:inline-flex;align-items:center;gap:12px;margin-bottom:26px;justify-content:center}
+.kicker::before,.kicker::after{content:"";width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan))}
+.kicker::after{background:linear-gradient(90deg,var(--cyan),transparent)}
+h1{font-family:var(--serif);font-weight:600;line-height:1.02;letter-spacing:-.02em;font-size:clamp(44px,9vw,120px)}
+.grad{background:linear-gradient(103deg,#5eead4 0%,#22d3ee 34%,#8b5cf6 82%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.shiny{background:linear-gradient(100deg,#5eead4,#eef2ff 45%,#8b5cf6);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:220% 0}}
+.lead{font-size:clamp(16px,2vw,23px);color:var(--muted);max-width:56ch;margin:28px auto 0;line-height:1.55}
+
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:52px;text-align:left}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{position:relative;display:flex;flex-direction:column;background:var(--glass);border:1px solid var(--glass-brd);border-radius:24px;padding:34px 30px;backdrop-filter:blur(16px);text-decoration:none;color:inherit;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s}
+.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .4s;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(94,234,212,.16),transparent 60%)}
+.card:hover{transform:translateY(-6px);border-color:rgba(150,170,255,.34)}
+.card:hover::before{opacity:1}
+.card .ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:linear-gradient(135deg,rgba(94,234,212,.18),rgba(139,92,246,.18));border:1px solid var(--glass-brd);margin-bottom:22px}
+.card h2{font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.01em;margin-bottom:10px}
+.card p{font-size:clamp(14px,1.5vw,16.5px);color:var(--muted);line-height:1.55;flex:1}
+.card .go{margin-top:24px;font-family:var(--mono);font-size:13px;color:var(--mint);display:inline-flex;align-items:center;gap:8px;transition:gap .3s}
+.card:hover .go{gap:14px}
+.card .tag{position:absolute;top:26px;right:28px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+.foot{position:relative;z-index:5;text-align:center;padding:22px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.rv{opacity:0;transform:translateY(20px);filter:blur(6px);animation:rise .8s cubic-bezier(.16,1,.3,1) forwards}
+.rv:nth-child(2){animation-delay:.1s}.rv:nth-child(3){animation-delay:.2s}.rv:nth-child(4){animation-delay:.3s}
+.cards .card:nth-child(1){animation-delay:.35s}.cards .card:nth-child(2){animation-delay:.45s}
+@keyframes rise{to{opacity:1;transform:none;filter:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}}
+</style>
+</head>
+<body>
+<div class="aurora"><span class="a"></span><span class="b"></span><span class="c"></span></div>
+<canvas id="stars"></canvas>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<main>
+  <div class="wrap">
+    <div class="kicker rv">Практический воркшоп для продактов</div>
+    <h1 class="rv">Как я работаю<br><span class="grad">с Клодом</span></h1>
+    <p class="lead rv">Мой реальный сетап работы с ИИ — и скиллы, которые превращают одну команду в проверенный фреймворк. Выбирай, куда зайти.</p>
+
+    <div class="cards">
+      <a class="card rv" href="/deck">
+        <span class="tag">презентация</span>
+        <div class="ico">▶</div>
+        <h2>Воркшоп</h2>
+        <p>Интерактивный дек: Обсидиан, Claude Code в терминале, почему ИИ залипает, как не жечь токены — и бонус про HTML одним запросом. Листается с проектора.</p>
+        <span class="go">Открыть дек →</span>
+      </a>
+      <a class="card rv" href="/skills">
+        <span class="tag">материал</span>
+        <div class="ico">🧰</div>
+        <h2>Скиллы для продактов</h2>
+        <p>Витрина 6 скиллов Claude Code для продукта и маркетинга: что делают, как подключить, как применять. Стратегия, идеи, психология, упаковка.</p>
+        <span class="go">Смотреть скиллы →</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<div class="foot">Собрано в Claude Code · один HTML-запрос</div>
+
+<script>
+document.addEventListener('mousemove',function(e){
+  var c=e.target.closest&&e.target.closest('.card');if(!c)return;
+  var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');
+});
+var cv=document.getElementById('stars'),ctx=cv.getContext('2d'),ps=[],DPR=Math.min(2,devicePixelRatio||1);
+function rs(){cv.width=innerWidth*DPR;cv.height=innerHeight*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}rs();addEventListener('resize',rs);
+for(var q=0;q<100;q++)ps.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+.2,s:Math.random()*.22+.03,o:Math.random()*.5+.2});
+(function d(){ctx.clearRect(0,0,innerWidth,innerHeight);for(var j=0;j<ps.length;j++){var p=ps[j];p.y-=p.s;if(p.y<-2){p.y=innerHeight+2;p.x=Math.random()*innerWidth}ctx.globalAlpha=p.o;ctx.fillStyle=j%5===0?'#5eead4':'#a9b6ff';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill()}ctx.globalAlpha=1;requestAnimationFrame(d)})();
+</script>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Как я работаю с Клодом</title>
+<meta name="description" content="Воркшоп для продактов: Обсидиан, Claude Code через терминал, экономия токенов и интерактивный HTML одним запросом." />
+<meta name="theme-color" content="#05070d" />
+<style>
+:root{
+  --bg:#05070d;
+  --bg2:#0a0f1c;
+  --ink:#eef2ff;
+  --muted:#9aa7c7;
+  --dim:#66739a;
+  --cyan:#22d3ee;
+  --teal:#0891b2;
+  --violet:#8b5cf6;
+  --mint:#5eead4;
+  --gold:#fcd34d;
+  --line:rgba(160,180,255,.12);
+  --glass:rgba(18,24,42,.55);
+  --glass-brd:rgba(150,170,255,.14);
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
+  --serif:"Georgia","Times New Roman",ui-serif,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- animated background ---------- */
+.aurora{position:fixed;inset:-20% -20% -20% -20%;z-index:0;filter:blur(60px) saturate(140%);opacity:.55;pointer-events:none}
+.aurora span{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:drift 26s ease-in-out infinite}
+.aurora .a{width:52vw;height:52vw;left:-8vw;top:-10vw;background:radial-gradient(circle at 30% 30%,#0891b2,transparent 62%)}
+.aurora .b{width:46vw;height:46vw;right:-6vw;top:4vw;background:radial-gradient(circle at 60% 40%,#7c3aed,transparent 62%);animation-delay:-8s}
+.aurora .c{width:44vw;height:44vw;left:22vw;bottom:-16vw;background:radial-gradient(circle at 50% 50%,#22d3ee,transparent 60%);animation-delay:-15s}
+.aurora .d{width:34vw;height:34vw;right:12vw;bottom:-10vw;background:radial-gradient(circle at 50% 50%,#5eead4,transparent 60%);animation-delay:-4s;opacity:.7}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,4vh) scale(1.12)}66%{transform:translate(-5vw,-3vh) scale(.94)}}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+.grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.55) 100%)}
+
+/* ---------- deck ---------- */
+#deck{position:relative;z-index:5;height:100%;width:100%}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(28px,6vw,110px);
+  opacity:0;visibility:hidden;transform:translateY(28px) scale(.99);
+  transition:opacity .6s ease,transform .7s cubic-bezier(.16,1,.3,1),visibility .6s;
+  pointer-events:none;
+}
+.slide.active{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.slide.past{transform:translateY(-24px) scale(.99)}
+.wrap{max-width:1120px;width:100%;margin:0 auto}
+
+/* reveal children */
+.slide.active .r{animation:rise .7s cubic-bezier(.16,1,.3,1) both}
+.slide.active .r:nth-child(1){animation-delay:.05s}
+.slide.active .r:nth-child(2){animation-delay:.15s}
+.slide.active .r:nth-child(3){animation-delay:.25s}
+.slide.active .r:nth-child(4){animation-delay:.35s}
+.slide.active .r:nth-child(5){animation-delay:.45s}
+.slide.active .r:nth-child(6){animation-delay:.55s}
+@keyframes rise{from{opacity:0;transform:translateY(20px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+
+/* typography */
+.kicker{font-family:var(--mono);font-size:clamp(11px,1.15vw,14px);letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:32px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+h1{font-family:var(--serif);font-weight:600;line-height:1.02;letter-spacing:-.02em;font-size:clamp(38px,7.2vw,104px)}
+h2{font-family:var(--serif);font-weight:600;line-height:1.05;letter-spacing:-.015em;font-size:clamp(30px,5.2vw,68px);margin-bottom:22px}
+.grad{background:linear-gradient(103deg,#5eead4 0%,#22d3ee 34%,#8b5cf6 82%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(17px,2.05vw,27px);line-height:1.5;color:var(--muted);max-width:60ch}
+.big{font-size:clamp(20px,2.6vw,34px);line-height:1.42;color:var(--ink);max-width:26ch;font-weight:500}
+.tag{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--mint);border:1px solid var(--glass-brd);background:rgba(94,234,212,.06);padding:6px 12px;border-radius:999px}
+.muted{color:var(--muted)}.dim{color:var(--dim)}
+
+/* cards / grid */
+.grid{display:grid;gap:18px;margin-top:34px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{
+  position:relative;background:var(--glass);border:1px solid var(--glass-brd);border-radius:20px;
+  padding:26px 24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s;
+}
+.card:hover{transform:translateY(-4px);border-color:rgba(150,170,255,.3)}
+.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(94,234,212,.14),transparent 60%)}
+.card:hover::before{opacity:1}
+.card .num{font-family:var(--mono);font-size:13px;color:var(--cyan);opacity:.8}
+.card .ico{font-size:26px;margin-bottom:14px;display:block}
+.card h3{font-size:clamp(17px,1.7vw,21px);margin:6px 0 8px;font-weight:650;letter-spacing:-.01em}
+.card p{font-size:clamp(13.5px,1.35vw,16px);line-height:1.5;color:var(--muted)}
+
+/* terminal */
+.term{background:#080b14;border:1px solid var(--glass-brd);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.8);margin-top:30px}
+.term .bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.term .bar i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.dotr{background:#ff5f57}.doty{background:#febc2e}.dotg{background:#28c840}
+.term .bar span{margin-left:10px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.term .body{padding:22px 22px 26px;font-family:var(--mono);font-size:clamp(12.5px,1.35vw,16px);line-height:1.75;min-height:210px}
+.term .body .p{color:var(--mint)}
+.term .body .c{color:var(--ink)}
+.term .body .o{color:var(--muted)}
+.term .body .ok{color:var(--cyan)}
+.caret{display:inline-block;width:9px;height:1.05em;background:var(--mint);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* stat / count up */
+.stat{font-family:var(--serif);font-weight:600;line-height:1;letter-spacing:-.02em;font-size:clamp(46px,8vw,104px)}
+.stat.small{font-size:clamp(34px,5vw,64px)}
+
+/* steps flow */
+.flow{display:flex;align-items:stretch;gap:14px;margin-top:36px;flex-wrap:wrap}
+.step{flex:1;min-width:150px;background:var(--glass);border:1px solid var(--glass-brd);border-radius:16px;padding:20px 18px;backdrop-filter:blur(12px);position:relative}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--cyan)}
+.step h4{margin:8px 0 6px;font-size:16px;font-weight:650}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.45}
+.step .arrow{position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:18px;z-index:2}
+@media(max-width:820px){.step .arrow{display:none}}
+
+/* pill list */
+.list{list-style:none;margin-top:28px;display:grid;gap:12px}
+.list li{display:flex;gap:14px;align-items:flex-start;font-size:clamp(15px,1.7vw,19px);line-height:1.4}
+.list li .b{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:#05070d;background:linear-gradient(135deg,var(--mint),var(--cyan));font-weight:700;margin-top:2px}
+.list li b{color:var(--ink);font-weight:650}
+.list li span{color:var(--muted)}
+
+/* quote / meta */
+.mono-block{font-family:var(--mono);font-size:clamp(13px,1.5vw,17px);line-height:1.7;background:#080b14;border:1px solid var(--glass-brd);border-left:3px solid var(--mint);border-radius:12px;padding:20px 22px;color:var(--muted);margin-top:26px;white-space:pre-wrap}
+.mono-block b{color:var(--mint);font-weight:600}
+
+/* hero extras */
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+
+/* cta */
+.cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:15px;color:#05070d;background:linear-gradient(135deg,var(--mint),var(--cyan));padding:14px 22px;border-radius:12px;font-weight:700;margin-top:8px}
+
+/* ---------- chrome ---------- */
+#bar{position:fixed;top:0;left:0;height:3px;z-index:40;background:linear-gradient(90deg,var(--mint),var(--cyan),var(--violet));width:0;transition:width .5s cubic-bezier(.16,1,.3,1);box-shadow:0 0 12px rgba(34,211,238,.6)}
+#hud{position:fixed;bottom:20px;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:center;gap:18px;pointer-events:none}
+#dots{display:flex;gap:7px;pointer-events:auto}
+#dots b{width:7px;height:7px;border-radius:50%;background:rgba(160,180,255,.22);cursor:pointer;transition:all .3s}
+#dots b.on{background:var(--cyan);width:22px;border-radius:4px;box-shadow:0 0 10px rgba(34,211,238,.6)}
+#count{position:fixed;bottom:18px;right:22px;z-index:40;font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.1em}
+#brandmark{position:fixed;top:16px;left:22px;z-index:40;font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+#brandmark b{color:var(--cyan)}
+#hint{position:fixed;bottom:16px;left:22px;z-index:40;font-family:var(--mono);font-size:11px;color:var(--dim);transition:opacity .6s}
+kbd{font-family:var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--muted);font-size:11px}
+@media(max-width:820px){#hint{display:none}}
+.nav-zone{position:fixed;top:0;bottom:0;width:14%;z-index:30;cursor:pointer}
+.nav-zone.left{left:0}.nav-zone.right{right:0}
+@media(max-width:820px){.nav-zone{width:22%}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.15s!important}}
+</style>
+</head>
+<body>
+<div class="aurora"><span class="a"></span><span class="b"></span><span class="c"></span><span class="d"></span></div>
+<canvas id="stars"></canvas>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<div id="bar"></div>
+
+<div id="deck">
+
+  <!-- 1 HERO -->
+  <section class="slide" data-notes="Хук. Пауза после первой фразы. Я продакт, не инженер — и это ключ: если смог я, сможет любой в зале. Не про кодинг, а про рычаг.">
+    <div class="wrap">
+      <div class="kicker r">Практический воркшоп для продактов</div>
+      <h1 class="r">Как я работаю<br><span class="grad">с Клодом</span></h1>
+      <p class="lead r" style="margin-top:26px">Я продакт. Я не пишу код. Но за вечер собираю рабочий продукт, презентацию или прототип — руками ИИ.</p>
+      <div class="badges r">
+        <span class="tag">🧠 Обсидиан</span>
+        <span class="tag">⌨️ Claude Code</span>
+        <span class="tag">🌀 Почему залипает</span>
+        <span class="tag">🔥 Токены</span>
+        <span class="tag">🎁 HTML одним запросом</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 WHY -->
+  <section class="slide" data-notes="Обещание воркшопа. Не теория про ИИ, а мой реальный сетап. 5 вещей, каждую унесёте и примените завтра. Тайминг ~2 мин.">
+    <div class="wrap">
+      <div class="kicker r">О чём говорим</div>
+      <h2 class="r">Не «что такое ИИ».<br>А <span class="grad">как я им реально работаю</span>.</h2>
+      <p class="lead r">Мой рабочий сетап без прикрас — инструменты, привычки и грабли. Всё, что унесёте и примените уже завтра.</p>
+      <div class="grid g4 r">
+        <div class="card" data-tilt><span class="num">01</span><span class="ico">🧠</span><h3>Обсидиан</h3><p>Второй мозг и память для ИИ</p></div>
+        <div class="card" data-tilt><span class="num">02</span><span class="ico">⌨️</span><h3>Терминал</h3><p>Claude Code вместо чата</p></div>
+        <div class="card" data-tilt><span class="num">03</span><span class="ico">🌀</span><h3>Залипание</h3><p>Почему тупит и как чинить</p></div>
+        <div class="card" data-tilt><span class="num">04</span><span class="ico">🔥</span><h3>Токены</h3><p>Как не сжечь бюджет</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 OBSIDIAN why -->
+  <section class="slide" data-notes="Проблема, которую решает Обсидиан: ИИ забывает всё между сессиями. Каждый раз объясняешь заново. Обсидиан = внешняя память, куда я и ИИ пишем.">
+    <div class="wrap">
+      <div class="kicker r">01 · Обсидиан</div>
+      <h2 class="r">Зачем вообще <span class="grad">Обсидиан</span>?</h2>
+      <p class="lead r">У ИИ нет памяти между сессиями. Каждый новый чат — чистый лист: заново объясняй проект, контекст, решения. Обсидиан — это внешний мозг, который помнит за меня <b class="muted">и за него</b>.</p>
+      <ul class="list r">
+        <li><span class="b">1</span><span><b>Второй мозг.</b> Заметки, идеи, куски проектов, ссылки — всё в простом markdown, локально, навсегда.</span></li>
+        <li><span class="b">2</span><span><b>Контекст для ИИ.</b> Кидаю папку в Клод — он читает и уже «в теме», не надо пересказывать.</span></li>
+        <li><span class="b">3</span><span><b>Память между сессиями.</b> Итоги, решения, грабли записаны — завтра ИИ продолжает, а не начинает с нуля.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 OBSIDIAN how -->
+  <section class="slide" data-notes="Как это выглядит: markdown-файлы, связи [[]], и главное — ИИ сам пишет в эти заметки. Покажи живой вольт если есть проектор. Это не про красоту, про то что plain text вечен.">
+    <div class="wrap">
+      <div class="kicker r">01 · Обсидиан</div>
+      <h2 class="r">Обычные <span class="grad">текстовые файлы</span> — и в этом сила</h2>
+      <div class="grid g3 r">
+        <div class="card" data-tilt><span class="ico">📄</span><h3>Plain markdown</h3><p>Никакого лока. Файлы твои, локальные, откроются через 20 лет. ИИ читает их нативно.</p></div>
+        <div class="card" data-tilt><span class="ico">🔗</span><h3>Связи <code>[[ ]]</code></h3><p>Заметки ссылаются друг на друга. Граф знаний = карта контекста для ИИ.</p></div>
+        <div class="card" data-tilt><span class="ico">🤖</span><h3>ИИ пишет сам</h3><p>Клод сам ведёт заметки: итоги сессий, решения, память проекта. Я только направляю.</p></div>
+      </div>
+      <div class="mono-block r">📁 Vault/<b>Konsol</b>/
+   ├── проект.md        <b>← кто мы, цели, ограничения</b>
+   ├── решения.md       <b>← что решили и почему</b>
+   └── грабли.md        <b>← на чём обожглись</b>
+
+<b>→</b> кидаю папку в Клод — он в контексте за 3 секунды</div>
+    </div>
+  </section>
+
+  <!-- 5 CLAUDE CODE intro -->
+  <section class="slide" data-notes="Переход к главному инструменту. Большинство знает Клода как чат в браузере. Я работаю через терминал — Claude Code. Это не про то что я хакер, это удобнее.">
+    <div class="wrap">
+      <div class="kicker r">02 · Claude Code</div>
+      <h2 class="r">Клод живёт<br>у меня <span class="grad">в терминале</span></h2>
+      <p class="lead r">Большинство знает Клода как чат в браузере. Я запускаю его в терминале — это <b class="muted">Claude Code</b>. Он видит мои файлы, сам их правит, запускает команды и деплоит. Не «подскажи код», а «сделай».</p>
+      <div class="badges r">
+        <span class="tag">видит весь проект</span>
+        <span class="tag">правит файлы сам</span>
+        <span class="tag">запускает команды</span>
+        <span class="tag">помнит контекст</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 CLAUDE CODE terminal demo -->
+  <section class="slide" data-notes="Живой терминал печатает сам. Дай ему допечатать перед тем как говорить дальше. Смысл: я пишу задачу человеческим языком, он делает реальную работу — не текст в ответ, а изменённые файлы + деплой.">
+    <div class="wrap">
+      <div class="kicker r">02 · Claude Code</div>
+      <h2 class="r">Задача словами → <span class="grad">готовый результат</span></h2>
+      <div class="term r">
+        <div class="bar"><i class="dotr"></i><i class="doty"></i><i class="dotg"></i><span>miron@mac — claude</span></div>
+        <div class="body" id="typed"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 CHAT vs TERMINAL -->
+  <section class="slide" data-notes="Почему терминал > чат. Не идеология. Чат = копипаст туда-сюда, ИИ не видит проект целиком. Терминал = ИИ внутри проекта, делает, а не советует. Продакту это даёт скорость прототипа.">
+    <div class="wrap">
+      <div class="kicker r">02 · Claude Code</div>
+      <h2 class="r">Чат в браузере <span class="dim">vs</span> <span class="grad">терминал</span></h2>
+      <div class="grid g2 r">
+        <div class="card" data-tilt style="border-color:rgba(255,120,120,.2)">
+          <span class="ico">💬</span><h3>Чат</h3>
+          <p style="line-height:1.7">• Копипаст кода туда-сюда<br>• Не видит проект целиком<br>• «Вот тебе код» → сам вставляй<br>• Забывает контекст в новой вкладке</p>
+        </div>
+        <div class="card" data-tilt style="border-color:rgba(94,234,212,.3)">
+          <span class="ico">⌨️</span><h3>Терминал (Claude Code)</h3>
+          <p style="line-height:1.7">• Видит и правит файлы сам<br>• Держит в голове весь проект<br>• Делает работу, а не советует<br>• Помнит через заметки и память</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 WHY STUCK -->
+  <section class="slide" data-notes="Честный слайд. Клод НЕ всегда быстрый. Иногда сидит 5 минут над ерундой. Важно понять почему — тогда не бесишься, а чинишь. Три причины.">
+    <div class="wrap">
+      <div class="kicker r">03 · Залипание</div>
+      <h2 class="r">Почему Клод иногда<br><span class="grad">сидит и тупит</span></h2>
+      <p class="lead r">Это нормально и объяснимо. Три главные причины, почему одна задача занимает у него 5 минут вместо 20 секунд:</p>
+      <div class="grid g3 r">
+        <div class="card" data-tilt><span class="num">причина 1</span><h3>Контекст переполнен</h3><p>Слишком много всего в памяти сессии — он перечитывает гору текста на каждый шаг.</p></div>
+        <div class="card" data-tilt><span class="num">причина 2</span><h3>Задача размыта</h3><p>«Сделай красиво» — он гадает, что ты имел в виду, и пробует варианты вслепую.</p></div>
+        <div class="card" data-tilt><span class="num">причина 3</span><h3>Ходит по кругу</h3><p>Ошибка → фикс → новая ошибка. Застревает в петле проб и правок.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 HOW TO FIX STUCK -->
+  <section class="slide" data-notes="Решения зеркалят проблемы. Главная мысль: залипание почти всегда = моя вина в постановке. Чиню вход — и он летает. /clear между задачами это буквально кнопка reset.">
+    <div class="wrap">
+      <div class="kicker r">03 · Залипание</div>
+      <h2 class="r">Как <span class="grad">расклинить</span></h2>
+      <ul class="list r">
+        <li><span class="b">→</span><span><b>Чисти контекст.</b> Новая задача — команда <code>/clear</code>. Не таскай хвост прошлого разговора.</span></li>
+        <li><span class="b">→</span><span><b>Ставь задачу конкретно.</b> Не «почини», а «кнопка не кликается на мобиле, вот файл — почему».</span></li>
+        <li><span class="b">→</span><span><b>Дроби большое на шаги.</b> Одна задача = один результат. Слона по кусочкам.</span></li>
+        <li><span class="b">→</span><span><b>Останови и переформулируй.</b> Если пошёл по кругу — Esc, и задай направление заново.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10 TOKENS intro -->
+  <section class="slide" data-notes="Токены = деньги и время. Объясни максимально просто: токен ≈ кусочек слова. Каждое слово в диалоге — расход. Чем длиннее контекст, тем дороже и медленнее КАЖДЫЙ шаг. Русский текст жрёт больше.">
+    <div class="wrap">
+      <div class="kicker r">04 · Токены</div>
+      <h2 class="r">Токены — это<br><span class="grad">деньги и время</span></h2>
+      <p class="lead r">Токен ≈ кусочек слова. ИИ платит токенами за всё, что читает и пишет. Чем больше контекст тащишь — тем дороже и <b class="muted">медленнее каждый шаг</b>.</p>
+      <div class="grid g3 r" style="margin-top:40px">
+        <div class="card" data-tilt style="text-align:center"><div class="stat grad" data-count="750">0</div><p style="margin-top:8px">слов ≈ 1000 токенов<br><span class="dim">(на английском)</span></p></div>
+        <div class="card" data-tilt style="text-align:center"><div class="stat grad" data-count="2" data-suffix="×">0</div><p style="margin-top:8px">во столько дороже<br><span class="dim">русский текст</span></p></div>
+        <div class="card" data-tilt style="text-align:center"><div class="stat grad" data-count="100" data-suffix="%">0</div><p style="margin-top:8px">контекста читается<br><span class="dim">заново на каждый шаг</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 SAVE TOKENS -->
+  <section class="slide" data-notes="Практика экономии. Это то что реально снижает мой счёт. Модель под задачу — самое важное: не бери топ-модель на ерунду. /clear часто. Точный промпт = меньше итераций = меньше токенов.">
+    <div class="wrap">
+      <div class="kicker r">04 · Токены</div>
+      <h2 class="r">Как <span class="grad">не сжечь</span> токены</h2>
+      <div class="grid g2 r">
+        <div class="card" data-tilt><span class="ico">🎯</span><h3>Модель под задачу</h3><p>Простое — на лёгкой модели. Топовую бери только там, где реально сложно. Не стреляй из пушки по воробьям.</p></div>
+        <div class="card" data-tilt><span class="ico">🧹</span><h3><code>/clear</code> между задачами</h3><p>Закончил — очисти контекст. Не тащи весь день в одной сессии: она пухнет и дорожает.</p></div>
+        <div class="card" data-tilt><span class="ico">✍️</span><h3>Точный промпт</h3><p>Чёткая задача = меньше итераций. Каждая переделка вслепую — это лишние токены.</p></div>
+        <div class="card" data-tilt><span class="ico">📎</span><h3>Давай только нужное</h3><p>Не кидай весь проект, если задача в одном файле. Меньше вход — дешевле и быстрее.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 MY LOOP -->
+  <section class="slide" data-notes="Собираю всё в один цикл. Это мой реальный рабочий флоу. Обсидиан кормит контекст → терминал делает → результат обратно в заметки → память растёт. Маховик.">
+    <div class="wrap">
+      <div class="kicker r">Сводка</div>
+      <h2 class="r">Мой <span class="grad">рабочий цикл</span></h2>
+      <div class="flow r">
+        <div class="step"><span class="n">01</span><h4>🧠 Контекст</h4><p>Обсидиан кормит ИИ проектом и памятью</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">02</span><h4>⌨️ Задача</h4><p>Ставлю словами в терминале, конкретно</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">03</span><h4>⚡ Работа</h4><p>Клод правит файлы, запускает, деплоит</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">04</span><h4>📝 Память</h4><p>Итоги в заметки — завтра продолжаем</p></div>
+      </div>
+      <p class="lead r" style="margin-top:34px">Маховик: чем больше памяти в Обсидиане — тем умнее ИИ работает завтра.</p>
+    </div>
+  </section>
+
+  <!-- 13 BONUS setup -->
+  <section class="slide" data-notes="Момент вау. Пауза. Задай вопрос залу: как думаете, сколько я делал эту презентацию? Потом раскрой на след слайде.">
+    <div class="wrap" style="text-align:center">
+      <div class="kicker r" style="justify-content:center">🎁 Бонус</div>
+      <h1 class="r" style="font-size:clamp(34px,6.5vw,92px)">А эту презентацию<br><span class="grad">я не рисовал</span></h1>
+      <p class="lead r" style="margin:26px auto 0;text-align:center">Ни одного слайда вручную. Ни PowerPoint, ни Figma, ни дизайнера.</p>
+    </div>
+  </section>
+
+  <!-- 14 BONUS reveal -->
+  <section class="slide" data-notes="Раскрытие. Всё что видите — один HTML файл, сгенерён Клодом по описанию. Прочитай промпт вслух. Смысл для продакта: прототип, лендинг, дашборд, презентация — за один запрос. Это меняет скорость проверки идей.">
+    <div class="wrap">
+      <div class="kicker r">🎁 Бонус · интерактивный HTML одним запросом</div>
+      <h2 class="r">Всё это — <span class="grad">один HTML-файл</span> от Клода</h2>
+      <p class="lead r">Аврора, частицы, анимации, живой терминал, счётчики — Клод собрал по одному описанию. Открывается двойным кликом, работает офлайн, деплоится за минуту.</p>
+      <div class="mono-block r"><b>Промпт был примерно такой:</b>
+
+«Сделай интерактивную презентацию про то,
+как я работаю с Клодом. Тёмный космический стиль,
+аврора-фон, стекло, анимации, живой терминал.
+5 тем: Обсидиан, терминал, залипание, токены, бонус.
+Один самодостаточный HTML-файл. Задеплой в Vercel.»</div>
+    </div>
+  </section>
+
+  <!-- 15 WHAT IT MEANS -->
+  <section class="slide" data-notes="Перевод на язык продакта. Не про красивые слайды. Про то что цикл проверки идеи сжимается с недель до вечера. Прототип, лендинг для теста спроса, дашборд, интерактивный concept для стейкхолдеров.">
+    <div class="wrap">
+      <div class="kicker r">Что это даёт продакту</div>
+      <h2 class="r">Идея → <span class="grad">рабочий артефакт</span> за вечер</h2>
+      <div class="grid g4 r">
+        <div class="card" data-tilt><span class="ico">🧪</span><h3>Прототип</h3><p>Проверить идею руками, а не на словах</p></div>
+        <div class="card" data-tilt><span class="ico">🛬</span><h3>Лендинг</h3><p>Тест спроса без разработки</p></div>
+        <div class="card" data-tilt><span class="ico">📊</span><h3>Дашборд</h3><p>Данные наглядно для стейкхолдеров</p></div>
+        <div class="card" data-tilt><span class="ico">🎬</span><h3>Презентация</h3><p>Вот такая — за один запрос</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 CLOSE -->
+  <section class="slide" data-notes="Финал. Главный тейкэвей: ИИ это не про замену продакта, а про рычаг. Кто научится ставить задачи ИИ — обгонит. Спасибо, вопросы.">
+    <div class="wrap" style="text-align:center">
+      <div class="kicker r" style="justify-content:center">Спасибо</div>
+      <h1 class="r"><span class="grad">Продукт делают</span><br>вопросом, а не кодом</h1>
+      <p class="lead r" style="margin:26px auto 30px;text-align:center">Кто научится ставить задачи ИИ — соберёт за вечер то, на что раньше уходили недели.</p>
+      <div class="r"><span class="cta" style="cursor:default">Вопросы? →</span></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-zone left" id="navL"></div>
+<div class="nav-zone right" id="navR"></div>
+
+<div id="hud"><div id="dots"></div></div>
+<div id="count">01 / 16</div>
+<div id="hint"><kbd>←</kbd> <kbd>→</kbd> листать · <kbd>F</kbd> фулскрин · <kbd>S</kbd> заметки</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var dots=document.getElementById('dots');
+  var bar=document.getElementById('bar');
+  var count=document.getElementById('count');
+  var hint=document.getElementById('hint');
+  var i=0, N=slides.length, typedDone=false;
+
+  slides.forEach(function(s,idx){
+    var b=document.createElement('b');
+    b.addEventListener('click',function(){go(idx)});
+    dots.appendChild(b);
+  });
+  var dotEls=[].slice.call(dots.children);
+
+  function pad(n){return (n<9?'0':'')+(n+1)}
+  function render(){
+    slides.forEach(function(s,idx){
+      s.classList.toggle('active',idx===i);
+      s.classList.toggle('past',idx<i);
+    });
+    dotEls.forEach(function(d,idx){d.classList.toggle('on',idx===i)});
+    bar.style.width=((i)/(N-1)*100)+'%';
+    count.textContent=pad(i)+' / '+N;
+    if(i>0&&hint){hint.style.opacity='0';}
+    // triggers
+    if(slides[i].querySelector('#typed')&&!typedDone){typeTerminal();}
+    var counters=slides[i].querySelectorAll('[data-count]');
+    counters.forEach(runCount);
+  }
+  function go(n){i=Math.max(0,Math.min(N-1,n));render()}
+  function next(){go(i+1)} function prev(){go(i-1)}
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next()}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev()}
+    else if(e.key==='Home'){go(0)} else if(e.key==='End'){go(N-1)}
+    else if(e.key==='f'||e.key==='F'){toggleFS()}
+    else if(e.key==='s'||e.key==='S'){toggleNotes()}
+  });
+  document.getElementById('navL').addEventListener('click',prev);
+  document.getElementById('navR').addEventListener('click',next);
+
+  // touch
+  var tx=0,ty=0;
+  document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+  document.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev()}
+  },{passive:true});
+
+  function toggleFS(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()} else {document.exitFullscreen&&document.exitFullscreen()} }
+
+  // presenter notes
+  var noteBox=null;
+  function toggleNotes(){
+    if(noteBox){noteBox.remove();noteBox=null;return}
+    noteBox=document.createElement('div');
+    noteBox.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(5,7,13,.95);border-top:1px solid var(--glass-brd);padding:18px 24px;font-family:var(--mono);font-size:14px;line-height:1.6;color:#9aa7c7;backdrop-filter:blur(10px)';
+    noteBox.innerHTML='<b style="color:#5eead4">📝 Заметки спикера:</b><br>'+(slides[i].getAttribute('data-notes')||'—');
+    document.body.appendChild(noteBox);
+  }
+  var _render=render;
+  render=function(){_render();if(noteBox){noteBox.innerHTML='<b style="color:#5eead4">📝 Заметки спикера:</b><br>'+(slides[i].getAttribute('data-notes')||'—')}};
+
+  // typewriter terminal
+  function typeTerminal(){
+    typedDone=true;
+    var el=document.getElementById('typed'); if(!el)return; el.innerHTML='';
+    var lines=[
+      {t:'> ',cls:'p'},{t:'сделай лендинг для теста спроса на новую фичу\n',cls:'c'},
+      {t:'\n⚡ читаю проект… анализирую аудиторию…\n',cls:'o'},
+      {t:'✔ создан index.html — hero, оффер, форма, аналитика\n',cls:'ok'},
+      {t:'✔ адаптив под мобилу, A/B двух заголовков\n',cls:'ok'},
+      {t:'\n> ',cls:'p'},{t:'задеплой\n',cls:'c'},
+      {t:'\n🚀 деплой в Vercel…\n',cls:'o'},
+      {t:'✔ готово → https://landing-test.vercel.app\n',cls:'ok'}
+    ];
+    var li=0,ci=0;
+    function tick(){
+      if(li>=lines.length){el.innerHTML+='<span class="caret"></span>';return}
+      var ln=lines[li];
+      if(ci===0){var sp=document.createElement('span');sp.className=ln.cls;sp.dataset.k='cur';el.appendChild(sp)}
+      var cur=el.querySelector('[data-k="cur"]');
+      cur.textContent+=ln.t[ci]; ci++;
+      if(ci>=ln.t.length){cur.removeAttribute('data-k');li++;ci=0;setTimeout(tick,ln.cls==='c'?40:8)}
+      else{setTimeout(tick,ln.cls==='c'?32:ln.cls==='p'?60:6)}
+    }
+    tick();
+  }
+
+  // count up
+  function runCount(el){
+    if(el.dataset.done)return; el.dataset.done='1';
+    var target=parseFloat(el.getAttribute('data-count'))||0;
+    var suf=el.getAttribute('data-suffix')||'';
+    var start=performance.now(),dur=1100;
+    function step(now){
+      var p=Math.min(1,(now-start)/dur);
+      var e=1-Math.pow(1-p,3);
+      var v=target*e;
+      el.textContent=(target%1===0?Math.round(v):v.toFixed(1))+suf;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // card spotlight
+  document.addEventListener('mousemove',function(e){
+    var c=e.target.closest&&e.target.closest('.card'); if(!c)return;
+    var r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    c.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+
+  // starfield
+  var cv=document.getElementById('stars'),ctx=cv.getContext('2d'),ps=[],DPR=Math.min(2,window.devicePixelRatio||1);
+  function resize(){cv.width=innerWidth*DPR;cv.height=innerHeight*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}
+  resize();addEventListener('resize',resize);
+  for(var k=0;k<90;k++)ps.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+.2,s:Math.random()*.25+.03,o:Math.random()*.5+.2});
+  function loop(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    for(var j=0;j<ps.length;j++){var p=ps[j];p.y-=p.s;if(p.y<-2){p.y=innerHeight+2;p.x=Math.random()*innerWidth}
+      ctx.globalAlpha=p.o;ctx.fillStyle=j%5===0?'#5eead4':'#a9b6ff';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill()}
+    ctx.globalAlpha=1;requestAnimationFrame(loop);
+  }
+  loop();
+
+  render();
+})();
+</script>
+</body>
+</html>

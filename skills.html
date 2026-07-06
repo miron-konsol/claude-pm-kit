@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Скиллы Claude Code для продактов и маркетологов</title>
+<meta name="description" content="6 скиллов Claude Code для продукта и маркетинга: что делают, как подключить, как применять."/>
+<meta name="theme-color" content="#05070d"/>
+<style>
+:root{
+  --bg:#05070d;--ink:#eef2ff;--muted:#9aa7c7;--dim:#66739a;
+  --cyan:#22d3ee;--teal:#0891b2;--violet:#8b5cf6;--mint:#5eead4;--gold:#fcd34d;
+  --line:rgba(160,180,255,.12);--glass:rgba(18,24,42,.5);--glass-brd:rgba(150,170,255,.14);
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono","Fira Code",Menlo,Consolas,monospace;
+  --serif:"Georgia","Times New Roman",ui-serif,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5}
+a{color:inherit}
+::selection{background:rgba(94,234,212,.28)}
+
+/* background */
+.aurora{position:fixed;inset:-20%;z-index:0;filter:blur(70px) saturate(140%);opacity:.5;pointer-events:none}
+.aurora span{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:drift 28s ease-in-out infinite}
+.aurora .a{width:52vw;height:52vw;left:-8vw;top:-12vw;background:radial-gradient(circle at 30% 30%,#0891b2,transparent 62%)}
+.aurora .b{width:48vw;height:48vw;right:-8vw;top:8vw;background:radial-gradient(circle at 60% 40%,#7c3aed,transparent 62%);animation-delay:-9s}
+.aurora .c{width:46vw;height:46vw;left:26vw;top:120vh;background:radial-gradient(circle at 50% 50%,#22d3ee,transparent 60%);animation-delay:-16s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,4vh) scale(1.12)}66%{transform:translate(-5vw,-3vh) scale(.94)}}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+.grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:overlay}
+main{position:relative;z-index:5}
+
+/* cursor */
+#cur,#curdot{position:fixed;top:0;left:0;z-index:90;pointer-events:none;border-radius:50%;mix-blend-mode:screen}
+#cur{width:34px;height:34px;border:1px solid rgba(94,234,212,.5);transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s}
+#curdot{width:5px;height:5px;background:var(--mint);transform:translate(-50%,-50%)}
+#cur.big{width:64px;height:64px;background:rgba(94,234,212,.06)}
+@media(pointer:coarse){#cur,#curdot{display:none}}
+
+/* nav dock */
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:6px;
+  background:rgba(10,14,24,.6);border:1px solid var(--glass-brd);border-radius:999px;backdrop-filter:blur(14px)}
+nav a{font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--muted);padding:8px 14px;border-radius:999px;text-decoration:none;transition:.25s;white-space:nowrap}
+nav a:hover{color:var(--ink);background:rgba(94,234,212,.08)}
+nav a.on{color:#05070d;background:linear-gradient(135deg,var(--mint),var(--cyan))}
+@media(max-width:720px){nav a.hideM{display:none}}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+.kicker{font-family:var(--mono);font-size:clamp(11px,1.1vw,13px);letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);display:inline-flex;align-items:center;gap:12px;margin-bottom:22px}
+.kicker::before{content:"";width:30px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.grad{background:linear-gradient(103deg,#5eead4 0%,#22d3ee 34%,#8b5cf6 82%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.shiny{background:linear-gradient(100deg,#5eead4,#eef2ff 45%,#8b5cf6);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:220% 0}}
+
+/* hero */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 80px;position:relative}
+h1{font-family:var(--serif);font-weight:600;line-height:1.02;letter-spacing:-.02em;font-size:clamp(40px,8vw,116px)}
+.sub{font-family:var(--mono);font-size:clamp(13px,1.6vw,18px);color:var(--muted);margin-top:26px;max-width:60ch;line-height:1.6}
+.sub b{color:var(--mint);font-weight:500}
+.herocta{display:flex;gap:14px;flex-wrap:wrap;margin-top:38px}
+.starbtn{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;color:var(--ink);padding:14px 24px;border-radius:12px;text-decoration:none;background:#0b1120;overflow:hidden;isolation:isolate}
+.starbtn::before{content:"";position:absolute;inset:-150%;z-index:-1;background:conic-gradient(from 0deg,transparent 0 300deg,var(--mint) 340deg,var(--cyan) 360deg);animation:spin 4s linear infinite}
+.starbtn::after{content:"";position:absolute;inset:1.5px;z-index:-1;background:#0b1120;border-radius:11px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ghost{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:14px;color:var(--muted);padding:14px 22px;border:1px solid var(--glass-brd);border-radius:12px;text-decoration:none;transition:.25s}
+.ghost:hover{color:var(--ink);border-color:rgba(94,234,212,.4)}
+.scrollhint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.2em;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,6px)}}
+
+/* metrics strip */
+.strip{display:flex;flex-wrap:wrap;gap:14px;margin-top:56px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0}
+.strip .m{flex:1;min-width:130px}
+.strip .n{font-family:var(--serif);font-size:clamp(30px,4vw,52px);font-weight:600;letter-spacing:-.02em;line-height:1}
+.strip .l{font-size:13px;color:var(--muted);margin-top:8px}
+
+/* sections */
+section{padding:clamp(70px,10vw,130px) 0;position:relative}
+.h2{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5.2vw,62px);line-height:1.05;letter-spacing:-.015em;margin-bottom:18px}
+.intro{font-size:clamp(16px,1.9vw,21px);color:var(--muted);max-width:62ch;line-height:1.55}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);filter:blur(6px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),filter .7s}
+.rv.in{opacity:1;transform:none;filter:none}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:44px}
+.tile{position:relative;grid-column:span 2;background:var(--glass);border:1px solid var(--glass-brd);border-radius:22px;padding:28px 26px;backdrop-filter:blur(16px);overflow:hidden;transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s;transform-style:preserve-3d}
+.tile.wide{grid-column:span 3}
+.tile.big{grid-column:span 3}
+@media(max-width:960px){.bento{grid-template-columns:1fr 1fr}.tile,.tile.wide,.tile.big{grid-column:span 1}}
+@media(max-width:640px){.bento{grid-template-columns:1fr}}
+.tile::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .35s;pointer-events:none;background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(94,234,212,.14),transparent 60%)}
+.tile:hover{border-color:rgba(150,170,255,.32)}
+.tile:hover::before{opacity:1}
+.tile .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.tile .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,rgba(94,234,212,.16),rgba(139,92,246,.16));border:1px solid var(--glass-brd)}
+.tile .cmd{font-family:var(--mono);font-size:12px;color:var(--cyan);background:rgba(34,211,238,.08);border:1px solid var(--glass-brd);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.tile h3{font-family:var(--serif);font-size:clamp(20px,2.2vw,27px);font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+.tile .one{font-size:14.5px;color:var(--muted);line-height:1.5;margin-bottom:16px}
+.tile .why{font-size:14px;color:var(--ink);line-height:1.55;border-left:2px solid var(--mint);padding-left:14px;margin-bottom:18px}
+.tile .fw{list-style:none;display:grid;gap:8px;margin-bottom:18px}
+.tile .fw li{display:flex;gap:9px;font-size:13.5px;color:var(--muted);line-height:1.45}
+.tile .fw li::before{content:"▸";color:var(--cyan);flex:none}
+.tile .fw li b{color:var(--ink);font-weight:600}
+.tile .ex{position:relative;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--muted);background:#080b14;border:1px solid var(--glass-brd);border-radius:12px;padding:14px 44px 14px 16px}
+.tile .ex .lab{display:block;color:var(--mint);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.copyp{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:10px;color:var(--dim);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:6px;padding:4px 7px;cursor:pointer;transition:.2s}
+.copyp:hover{color:var(--mint);border-color:rgba(94,234,212,.45)}
+.tilefoot{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.src{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;transition:.2s}
+.src:hover{color:var(--mint)}
+.src svg{width:14px;height:14px;fill:currentColor;flex:none}
+.src.personal{color:var(--dim);cursor:default}
+.tile .badge{position:absolute;top:20px;right:22px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.grouplab{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin:52px 0 4px;display:flex;align-items:center;gap:14px}
+.grouplab::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* terminal windows (how to connect) */
+.conn{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+@media(max-width:900px){.conn{grid-template-columns:1fr}}
+.term{background:#080b14;border:1px solid var(--glass-brd);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px -40px rgba(0,0,0,.9);display:flex;flex-direction:column}
+.term .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.term .bar i{width:10px;height:10px;border-radius:50%}
+.dotr{background:#ff5f57}.doty{background:#febc2e}.dotg{background:#28c840}
+.term .bar span{margin-left:8px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.term .body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
+.term h4{font-size:16px;font-weight:650;margin-bottom:6px}
+.term .desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px;flex:1}
+.code{position:relative;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--ink);background:#0b1120;border:1px solid var(--line);border-radius:10px;padding:12px 40px 12px 14px;white-space:pre-wrap;word-break:break-word}
+.code .p{color:var(--mint)}
+.copy{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:10px;color:var(--dim);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:6px;padding:4px 7px;cursor:pointer;transition:.2s}
+.copy:hover{color:var(--mint);border-color:rgba(94,234,212,.4)}
+.note{margin-top:14px;font-size:13px;color:var(--muted);background:var(--glass);border:1px solid var(--glass-brd);border-radius:12px;padding:14px 16px;line-height:1.55}
+.note b{color:var(--ink)}
+
+/* scenarios */
+.cases{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+@media(max-width:820px){.cases{grid-template-columns:1fr}}
+.case{background:var(--glass);border:1px solid var(--glass-brd);border-radius:18px;padding:26px 24px;backdrop-filter:blur(14px)}
+.case h4{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.flowline{list-style:none;display:grid;gap:12px}
+.flowline li{display:flex;gap:12px;font-size:14.5px;line-height:1.5;color:var(--muted)}
+.flowline li .s{flex:none;font-family:var(--mono);font-size:11px;color:#05070d;background:linear-gradient(135deg,var(--mint),var(--cyan));width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-weight:700;margin-top:1px}
+.flowline li b{color:var(--ink);font-weight:600}
+.flowline li code{font-family:var(--mono);color:var(--cyan);font-size:13px}
+
+/* marquee */
+.marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;margin-top:20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marq .track{display:flex;gap:44px;width:max-content;animation:slide 34s linear infinite}
+.marq:hover .track{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.marq .track span{font-family:var(--serif);font-size:clamp(20px,3vw,34px);color:var(--dim);white-space:nowrap;letter-spacing:-.01em}
+.marq .track span b{color:var(--muted);font-weight:600}
+
+/* final */
+.final{text-align:center}
+.final .h2{margin:0 auto 18px}
+footer{border-top:1px solid var(--line);padding:30px 0 40px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}.rv{transition-duration:.2s!important}}
+</style>
+</head>
+<body>
+<div class="aurora"><span class="a"></span><span class="b"></span><span class="c"></span></div>
+<canvas id="stars"></canvas>
+<div class="grain"></div>
+<div id="cur"></div><div id="curdot"></div>
+
+<nav>
+  <a href="#hero" class="on">Начало</a>
+  <a href="#skills">Скиллы</a>
+  <a href="#connect" class="hideM">Подключить</a>
+  <a href="#use" class="hideM">Применять</a>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <header id="hero"><div class="wrap">
+    <div class="kicker rv">Claude Code · скиллы для продукта и маркетинга</div>
+    <h1 class="rv">Скиллы для<br><span class="shiny" id="scramble">продактов</span> <span class="grad">и&nbsp;маркетологов</span></h1>
+    <p class="sub rv">Скилл — это <b>готовый навык</b>, который Клод подхватывает по команде <b>/имя</b>. Вместо длинного промпта — одно слово, за которым стоит проверенный фреймворк. Вот 6 скиллов, которые я реально использую для стратегии, идей и упаковки продукта.</p>
+    <div class="herocta rv">
+      <a href="#skills" class="starbtn">▸ Смотреть скиллы</a>
+      <a href="#connect" class="ghost">Как подключить →</a>
+    </div>
+    <div class="strip rv">
+      <div class="m"><div class="n grad" data-count="6">0</div><div class="l">скилла в наборе</div></div>
+      <div class="m"><div class="n grad" data-count="1">0</div><div class="l">команда вместо промпта</div></div>
+      <div class="m"><div class="n grad" data-count="3">0</div><div class="l">источника установки</div></div>
+      <div class="m"><div class="n grad" data-count="0" data-suffix="₽">0</div><div class="l">стоимость</div></div>
+    </div>
+  </div>
+  <div class="scrollhint">↓ листай</div>
+  </header>
+
+  <!-- SKILLS -->
+  <section id="skills"><div class="wrap">
+    <div class="kicker rv">01 · Каталог</div>
+    <h2 class="h2 rv">6 скиллов, <span class="grad">которые стоит забрать</span></h2>
+    <p class="intro rv">Каждый — что делает, зачем продакту, какой фреймворк внутри и пример запроса. Наведи на карточку.</p>
+
+    <div class="grouplab rv">🧭 Стратегия и продукт</div>
+    <div class="bento">
+
+      <article class="tile big rv" data-tilt>
+        <span class="badge">персональный</span>
+        <div class="top"><div class="ico">🧠</div><span class="cmd">/product-strategy</span></div>
+        <h3>Продуктовая стратегия</h3>
+        <p class="one">Полная стратегия digital-продукта — от рынка до роадмапа, в интерактивный HTML.</p>
+        <div class="why">Проводит через весь цикл: рынок → конкуренты → персоны/JTBD → CJM → вижн → роадмап → метрики. Каждая цифра с источником и датой.</div>
+        <ul class="fw">
+          <li><b>10 разделов:</b> рынок (TAM/CAGR), JTBD-персоны, 3 эшелона конкурентов, продукт as-is, вижн, фокусы, роадмап 12 мес, метрики</li>
+          <li><b>AI-касдев:</b> синтетические интервью — Клод играет персону, кластеризует боль, проверяет гипотезы</li>
+          <li><b>Два вижина:</b> нишевый/premium vs суперапп/platform + сравнение</li>
+          <li><b>На выходе:</b> самодостаточный интерактивный HTML с сайдбаром (на русском)</li>
+        </ul>
+        <div class="ex"><span class="lab">Пример запроса</span>«Построй продуктовую стратегию для нашего LMS-приложения на рынке РФ, горизонт 12 месяцев. Вот известные конкуренты…»</div>
+      </article>
+
+      <article class="tile big rv" data-tilt>
+        <span class="badge">персональный</span>
+        <div class="top"><div class="ico">🎯</div><span class="cmd">/product-marketing</span></div>
+        <h3>Продуктовый маркетинг</h3>
+        <p class="one">Единый контекст-документ о продукте, аудитории и позиционировании.</p>
+        <div class="why">Один раз фиксируешь фундамент — и все остальные маркетинг-скиллы автоматически подтягивают этот файл. Не повторяешь вводные в каждой задаче.</div>
+        <ul class="fw">
+          <li><b>12 секций:</b> продукт, ICP, персоны, боли, конкуренты, дифференциация, возражения, голос бренда, proof points, цели</li>
+          <li><b>JTBD Four Forces:</b> Push / Pull / Habit / Anxiety — динамика переключения</li>
+          <li><b>Customer Language:</b> дословные цитаты клиентов вместо своих формулировок</li>
+          <li><b>На выходе:</b> файл <code style="font-family:var(--mono);color:var(--cyan)">.agents/product-marketing.md</code> — общий контекст</li>
+        </ul>
+        <div class="ex"><span class="lab">Пример запроса</span>«Настрой контекст продукта: опиши наш ICP, позиционирование и боли — сделай черновик из репозитория, потом поправлю.»</div>
+      </article>
+
+      <article class="tile wide rv" data-tilt>
+        <span class="badge">marketplace</span>
+        <div class="top"><div class="ico">🌊</div><span class="cmd">/blue-ocean-strategy</span></div>
+        <h3>Стратегия голубого океана</h3>
+        <p class="one">Уводит из ценовых войн в неоспариваемое рыночное пространство.</p>
+        <div class="why">Помогает найти новый спрос, где конкуренты нерелевантны — одновременно снижая издержки и повышая ценность.</div>
+        <ul class="fw">
+          <li><b>ERRC-сетка:</b> Устранить / Снизить / Повысить / Создать факторы конкуренции</li>
+          <li><b>Strategy Canvas:</b> кривые ценности — ты vs конкуренты</li>
+          <li><b>Six Paths</b> + три яруса не-клиентов; оценка стратегии по шкале 0–10</li>
+        </ul>
+        <div class="ex"><span class="lab">Пример запроса</span>«У нас SaaS для дизайнеров, все режут цены. Найди голубой океан — прогони через ERRC и strategy canvas.»</div>
+      </article>
+
+      <article class="tile wide rv" data-tilt>
+        <span class="badge">superpowers</span>
+        <div class="top"><div class="ico">💡</div><span class="cmd">/brainstorming</span></div>
+        <h3>Брейншторминг идей в дизайн</h3>
+        <p class="one">Превращает сырую идею в согласованную спеку — до кода.</p>
+        <div class="why">Заставляет прояснить намерение, ограничения и критерии успеха раньше реализации — там, где непроверенные допущения дороже всего.</div>
+        <ul class="fw">
+          <li><b>Вопросы по одному</b> → фокус на цель / ограничения / критерии успеха</li>
+          <li><b>2–3 подхода</b> с трейд-оффами и рекомендацией; YAGNI безжалостно</li>
+          <li><b>Гейт:</b> не пишет код, пока дизайн не одобрен → затем спека в файл</li>
+        </ul>
+        <div class="ex"><span class="lab">Пример запроса</span>«Хочу добавить push-реактивацию для спящих юзеров. Давай сначала разберём, что именно строим.»</div>
+      </article>
+
+    </div>
+
+    <div class="grouplab rv">📣 Маркетинг и рост</div>
+    <div class="bento">
+
+      <article class="tile big rv" data-tilt>
+        <span class="badge">персональный</span>
+        <div class="top"><div class="ico">🚀</div><span class="cmd">/marketing-ideas</span></div>
+        <h3>Маркетинговые идеи</h3>
+        <p class="one">Подбирает тактики роста из библиотеки 139 проверенных идей.</p>
+        <div class="why">Застрял, как продвигать продукт? Даёт 3–5 идей под твой этап, бюджет и команду — с первыми шагами и ожидаемым результатом.</div>
+        <ul class="fw">
+          <li><b>139 идей в 17 категориях:</b> контент/SEO, платный трафик, комьюнити, email, партнёрства, PR, PLG…</li>
+          <li><b>Подбор</b> по этапу (pre-launch → scale), бюджету (0 → high) и таймлайну</li>
+          <li><b>Подборки под задачу:</b> «нужны лиды срочно», «строим авторитет», «PLG», «enterprise»</li>
+        </ul>
+        <div class="ex"><span class="lab">Пример запроса</span>«У нас B2B SaaS на early stage, бюджет почти ноль, команда 3 человека. Дай маркетинговые идеи под нас.»</div>
+      </article>
+
+      <article class="tile big rv" data-tilt>
+        <span class="badge">персональный</span>
+        <div class="top"><div class="ico">🧲</div><span class="cmd">/marketing-psychology</span></div>
+        <h3>Маркетинговая психология</h3>
+        <p class="one">Применяет когнитивные искажения к маркетинговым решениям.</p>
+        <div class="why">Объясняет, почему люди покупают, и даёт конкретные рычаги под задачу — низкая конверсия, ценовые возражения, отток, паралич выбора. С оговоркой об этике.</div>
+        <ul class="fw">
+          <li><b>Психология покупателя:</b> эффект владения, IKEA-эффект, нулевая цена, парадокс выбора, Зейгарник</li>
+          <li><b>Убеждение:</b> якорение, эффект приманки (decoy), дефицит, взаимность, фрейминг</li>
+          <li><b>Цена:</b> charm-pricing, левая цифра, good-better-best; модели поведения: Fogg B=MAP, AIDA</li>
+        </ul>
+        <div class="ex"><span class="lab">Пример запроса</span>«Юзеры бросают оплату на pricing-странице. Какие психологические модели применить, чтобы поднять конверсию?»</div>
+      </article>
+
+    </div>
+  </div></section>
+
+  <!-- CONNECT -->
+  <section id="connect"><div class="wrap">
+    <div class="kicker rv">02 · Установка</div>
+    <h2 class="h2 rv">Как <span class="grad">подключить</span></h2>
+    <p class="intro rv">Честно: набор из трёх источников, единой команды нет. Скилл — это папка с файлом <code style="font-family:var(--mono);color:var(--cyan)">SKILL.md</code>. Плагины ставятся через <code style="font-family:var(--mono);color:var(--cyan)">/plugin</code>, личные скиллы просто лежат в <code style="font-family:var(--mono);color:var(--cyan)">~/.claude/skills/</code>.</p>
+
+    <div class="conn">
+      <div class="term rv">
+        <div class="bar"><i class="dotr"></i><i class="doty"></i><i class="dotg"></i><span>superpowers</span></div>
+        <div class="body">
+          <h4>brainstorming</h4>
+          <p class="desc">Плагин superpowers (официальный marketplace Anthropic). Ставится один раз, внутри — десятки скиллов.</p>
+          <div class="code"><button class="copy">copy</button><span class="p">/plugin</span> marketplace add anthropics/claude-plugins-official
+<span class="p">/plugin</span> install superpowers@claude-plugins-official</div>
+        </div>
+      </div>
+
+      <div class="term rv">
+        <div class="bar"><i class="dotr"></i><i class="doty"></i><i class="dotg"></i><span>wondelai-skills</span></div>
+        <div class="body">
+          <h4>blue-ocean-strategy</h4>
+          <p class="desc">Из marketplace wondelai (набор strategy-growth — вместе с Crossing the Chasm, Traction, Obviously Awesome).</p>
+          <div class="code"><button class="copy">copy</button><span class="p">/plugin</span> marketplace add wondelai/skills
+<span class="p">/plugin</span> install strategy-growth@wondelai-skills</div>
+        </div>
+      </div>
+
+      <div class="term rv">
+        <div class="bar"><i class="dotr"></i><i class="doty"></i><i class="dotg"></i><span>~/.claude/skills</span></div>
+        <div class="body">
+          <h4>ещё 4 скилла</h4>
+          <p class="desc">product-strategy, product-marketing, marketing-ideas, marketing-psychology — личные скиллы. Просто папка + SKILL.md.</p>
+          <div class="code"><button class="copy">copy</button>~/.claude/skills/product-strategy/SKILL.md
+~/.claude/skills/marketing-ideas/SKILL.md
+<span class="p">#</span> положи файл — скилл готов</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note rv"><b>Проверить, что подключилось:</b> набери <code style="font-family:var(--mono);color:var(--cyan)">/</code> в Claude Code — скилл появится в списке. Вызывается командой <code style="font-family:var(--mono);color:var(--cyan)">/имя-скилла</code>, дальше Клод сам ведёт по шагам.</div>
+  </div></section>
+
+  <!-- USE -->
+  <section id="use"><div class="wrap">
+    <div class="kicker rv">03 · Практика</div>
+    <h2 class="h2 rv">Как <span class="grad">применять</span> — два маршрута</h2>
+    <p class="intro rv">Скиллы складываются в цепочку. Сначала фундамент, потом стратегия и упаковка.</p>
+
+    <div class="cases">
+      <div class="case rv">
+        <h4>🧭 Маршрут продакта</h4>
+        <ul class="flowline">
+          <li><span class="s">1</span><span><code>/product-marketing</code> — <b>зафиксируй контекст</b> продукта, ICP и боли. Один раз.</span></li>
+          <li><span class="s">2</span><span><code>/product-strategy</code> — <b>собери стратегию</b> с рынком, персонами и роадмапом в интерактивный HTML.</span></li>
+          <li><span class="s">3</span><span><code>/blue-ocean-strategy</code> — <b>проверь позиционирование</b>: где уйти от конкуренции через ERRC.</span></li>
+          <li><span class="s">4</span><span><code>/brainstorming</code> — <b>любую новую фичу</b> прогоняй здесь до реализации.</span></li>
+        </ul>
+      </div>
+      <div class="case rv">
+        <h4>📣 Маршрут маркетолога</h4>
+        <ul class="flowline">
+          <li><span class="s">1</span><span><code>/product-marketing</code> — <b>тот же контекст-файл</b>: его подтянут все маркетинг-скиллы.</span></li>
+          <li><span class="s">2</span><span><code>/marketing-ideas</code> — <b>выбери каналы</b> роста под этап и бюджет.</span></li>
+          <li><span class="s">3</span><span><code>/marketing-psychology</code> — <b>усиль конверсию</b>: якорение, decoy, фрейминг цены.</span></li>
+          <li><span class="s">4</span><span>Дальше — в профильные скиллы: <b>ads, copywriting, cro, emails</b>.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- marquee -->
+  <div class="marq"><div class="track" id="marq"></div></div>
+
+  <!-- FINAL -->
+  <section class="final"><div class="wrap">
+    <div class="kicker rv" style="justify-content:center">Забирай</div>
+    <h2 class="h2 rv"><span class="grad">Одна команда</span> вместо<br>длинного промпта</h2>
+    <p class="intro rv" style="margin:0 auto 34px">Подключил один раз — и мышление стратега, маркетолога и продакта под рукой. Начни с <code style="font-family:var(--mono);color:var(--cyan)">/product-marketing</code>, дальше по цепочке.</p>
+    <div class="rv" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="#skills" class="starbtn">▸ К каталогу скиллов</a>
+    </div>
+  </div></section>
+
+  <footer>Собрано в Claude Code · страница — один HTML-запрос</footer>
+</main>
+
+<script>
+(function(){
+  // reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  [].forEach.call(document.querySelectorAll('.rv'),function(el,i){el.style.transitionDelay=((i%5)*60)+'ms';io.observe(el)});
+
+  // count up
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target;cio.unobserve(el);
+    var t=parseFloat(el.getAttribute('data-count'))||0,suf=el.getAttribute('data-suffix')||'',s=performance.now();
+    function step(n){var p=Math.min(1,(n-s)/1000),v=t*(1-Math.pow(1-p,3));el.textContent=Math.round(v)+suf;if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step);
+  })},{threshold:.5});
+  [].forEach.call(document.querySelectorAll('[data-count]'),function(el){cio.observe(el)});
+
+  // spotlight + tilt
+  document.addEventListener('mousemove',function(e){
+    var t=e.target.closest&&e.target.closest('.tile');if(!t)return;
+    var r=t.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    t.style.setProperty('--mx',x+'px');t.style.setProperty('--my',y+'px');
+    if(t.hasAttribute('data-tilt')){var rx=((y/r.height)-.5)*-5,ry=((x/r.width)-.5)*5;t.style.transform='perspective(900px) rotateX('+rx+'deg) rotateY('+ry+'deg) translateY(-3px)'}
+  });
+  document.addEventListener('mouseout',function(e){var t=e.target.closest&&e.target.closest('.tile');if(t&&t.hasAttribute('data-tilt'))t.style.transform=''});
+
+  // copy buttons
+  [].forEach.call(document.querySelectorAll('.copy'),function(b){b.addEventListener('click',function(){
+    var code=b.parentNode.innerText.replace(/^copy\s*/,'').trim();
+    navigator.clipboard&&navigator.clipboard.writeText(code);var o=b.textContent;b.textContent='✓ ok';setTimeout(function(){b.textContent=o},1400);
+  })});
+
+  // scramble hero word
+  (function(){var el=document.getElementById('scramble');if(!el)return;var final=el.textContent,gly='ABCDEFghij#@$%&{}[]<>/\\|=+*';var i=0;
+    var iv=setInterval(function(){i++;el.textContent=final.split('').map(function(c,j){return j<i?final[j]:gly[Math.floor((j*7+i*13)%gly.length)]}).join('');if(i>=final.length)clearInterval(iv)},55);})();
+
+  // scroll-spy nav
+  var links=[].slice.call(document.querySelectorAll('nav a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+  addEventListener('scroll',function(){var y=scrollY+innerHeight*.35,cur=0;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('on',i===cur)})},{passive:true});
+
+  // marquee
+  var names=['/product-strategy','/product-marketing','/blue-ocean-strategy','/brainstorming','/marketing-ideas','/marketing-psychology'];
+  var m=document.getElementById('marq');var html='';for(var k=0;k<2;k++){names.forEach(function(n){html+='<span><b>'+n+'</b></span><span>·</span>'})}m.innerHTML=html;
+
+  // custom cursor
+  var cur=document.getElementById('cur'),dot=document.getElementById('curdot'),cx=0,cy=0,tx=0,ty=0;
+  addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;dot.style.left=tx+'px';dot.style.top=ty+'px'});
+  (function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop)})();
+  document.addEventListener('mouseover',function(e){cur.classList.toggle('big',!!(e.target.closest&&e.target.closest('.tile,a,button')))});
+
+  // starfield
+  var cv=document.getElementById('stars'),ctx=cv.getContext('2d'),ps=[],DPR=Math.min(2,devicePixelRatio||1);
+  function rs(){cv.width=innerWidth*DPR;cv.height=innerHeight*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}rs();addEventListener('resize',rs);
+  for(var q=0;q<110;q++)ps.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+.2,s:Math.random()*.22+.03,o:Math.random()*.5+.2});
+  (function d(){ctx.clearRect(0,0,innerWidth,innerHeight);for(var j=0;j<ps.length;j++){var p=ps[j];p.y-=p.s;if(p.y<-2){p.y=innerHeight+2;p.x=Math.random()*innerWidth}ctx.globalAlpha=p.o;ctx.fillStyle=j%5===0?'#5eead4':'#a9b6ff';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill()}ctx.globalAlpha=1;requestAnimationFrame(d)})();
+})();
+</script>
+</body>
+</html>
