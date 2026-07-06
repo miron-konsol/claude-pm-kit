@@ -175,57 +175,49 @@ kbd{font-family:var(--mono);border:1px solid var(--line);border-bottom-width:2px
 
 <div id="deck">
   <!-- 1 HOOK -->
-  <section class="slide" data-notes="Хук + открытая петля. НЕ раскрывай, как сделана презентация — раскроешь на слайде 10. Пауза после «собрал не я». Спойлер про «продакт, не пишу код» роднит с залом и снимает миф «для разрабов».">
+  <section class="slide" data-notes="Вступление. Я продакт, не пишу код — если смог я, сможет любой. Сегодня покажу свой реальный сетап по 5 темам + бонус. Держи лёгкую интригу про бонус.">
     <div class="wrap">
-      <div class="kicker r">Практический воркшоп · для продактов</div>
-      <h1 class="r">Эту презентацию<br><span class="grad">собрал не я</span></h1>
-      <p class="lead r" style="margin-top:26px">Ни PowerPoint, ни Figma, ни дизайнера. Как — покажу в конце. Спойлер: я продакт и не пишу код. Но дискавери, прототипы и PRD теперь собираю за вечер.</p>
+      <div class="kicker r">ИИ-воркшоп · команда продукта</div>
+      <h1 class="r">Как я работаю<br><span class="grad">с Клодом</span></h1>
+      <p class="lead r" style="margin-top:26px">Я продакт — не пишу код. Но дискавери, прототипы и даже целые презентации собираю за вечер руками ИИ. Покажу свой сетап и зачем он вам.</p>
     </div>
   </section>
 
-  <!-- 2 PAIN -->
-  <section class="slide" data-notes="Назови боль, в которой продакт узнает себя. Спроси зал: «знакомо?» — пусть покивают. Это фундамент: дальше ИИ = избавление от ЭТОЙ боли, а не абстрактный «рычаг».">
+  <!-- 2 AGENDA -->
+  <section class="slide" data-notes="Повестка — ровно то, что в приглашении. Проговори все 5 + бонус, чтобы люди понимали маршрут. ~1 мин.">
     <div class="wrap">
-      <div class="kicker r">Знакомо?</div>
-      <h2 class="r">Гипотеза → тикет →<br><span class="grad">три спринта ожидания</span></h2>
-      <p class="lead r">Пока ждёшь дизайн и фронт, чтобы проверить идею, — приоритет режут, момент уходит. Дискавери, конкуренты, PRD копятся, а рук нет. И так каждый квартал.</p>
+      <div class="kicker r">О чём сегодня</div>
+      <h2 class="r">5 тем <span class="grad">+ бонус</span></h2>
+      <ul class="list r">
+        <li><span class="b">1</span><span><b>Зачем нужен Обсидиан</b> — память и контекст для ИИ</span></li>
+        <li><span class="b">2</span><span><b>Клод через терминал</b> — Claude Code вместо чата</span></li>
+        <li><span class="b">3</span><span><b>Почему Клод залипает</b> над задачей — и как расклинить</span></li>
+        <li><span class="b">4</span><span><b>Как не жечь токены</b></span></li>
+        <li><span class="b">🎁</span><span><b>Бонус</b> — интерактивный HTML одним запросом</span></li>
+      </ul>
     </div>
   </section>
 
-  <!-- 3 SHIFT / STAKES -->
-  <section class="slide" data-notes="Стейкс через неприятие потерь — вынесен из заметок на слайд. Сразу сними тревогу «меня заменят»: ИИ убирает очередь, а не продакта. Навык постановки вопроса = твоя работа, теперь он дефицитный.">
+  <!-- 3 ОБСИДИАН -->
+  <section class="slide" data-notes="Тема 1. У ИИ нет памяти между сессиями — каждый чат чистый лист. Обсидиан = внешний мозг: заметки в markdown, куда пишу я и сам ИИ. Кидаю папку → он в теме за секунды. Покажи живой вольт, если есть.">
     <div class="wrap">
-      <div class="kicker r">Что меняется</div>
-      <h2 class="r">Скоро будет <span class="grad">два типа продактов</span></h2>
-      <div class="grid g2 r">
-        <div class="card" data-tilt style="border-color:rgba(255,120,120,.22)"><span class="ico">⏳</span><h3>Первый</h3><p>Пишет тикет и ждёт спринт. За квартал проверил одну гипотезу.</p></div>
-        <div class="card" data-tilt style="border-color:rgba(94,234,212,.3)"><span class="ico">⚡</span><h3>Второй</h3><p>За вечер проверил три и пришёл к стейкхолдерам с прототипом, а не со слайдом.</p></div>
-      </div>
-      <p class="lead r" style="margin-top:26px">ИИ не заменит продакта — уберёт очередь между твоим решением и результатом. Выигрывает тот, кто точнее ставит вопрос. Это и есть твоя работа.</p>
+      <div class="kicker r">Тема 1 · Обсидиан</div>
+      <h2 class="r">Зачем нужен <span class="grad">Обсидиан</span></h2>
+      <p class="lead r">У ИИ нет памяти между сессиями: новый чат — чистый лист. Обсидиан — внешний мозг в простом markdown, куда пишу я и сам ИИ. Кидаю папку → Клод «в теме» за секунды, не пересказываю заново.</p>
+      <ul class="list r">
+        <li><span class="b">1</span><span><b>Второй мозг.</b> Заметки, идеи, куски проектов — локально, навсегда.</span></li>
+        <li><span class="b">2</span><span><b>Контекст для ИИ.</b> Не объясняю проект каждый раз — он читает заметки сам.</span></li>
+        <li><span class="b">3</span><span><b>Память между сессиями.</b> Решения записаны — завтра ИИ продолжает, а не с нуля.</span></li>
+      </ul>
     </div>
   </section>
 
-  <!-- 4 PROOF before/after -->
-  <section class="slide" data-notes="Доказательство. ⚠️ ЦИФРЫ — ЗАМЕНИ НА СВОИ РЕАЛЬНЫЕ ЗАМЕРЫ. Даже приблизительные личные цифры бьют абстракцию «недели в часы». Скажи честно: «это мои замеры, порядок величин».">
+  <!-- 4 ТЕРМИНАЛ -->
+  <section class="slide" data-notes="Тема 2. Большинство знает Клода как чат. Я запускаю в терминале — Claude Code: видит файлы, правит сам, запускает, деплоит. Дай терминалу допечатать. Демо — продуктовое (отзывы → JTBD), не про код.">
     <div class="wrap">
-      <div class="kicker r">Что реально меняется в неделе</div>
-      <h2 class="r"><span class="grad">Было → стало</span></h2>
-      <div class="r" style="margin-top:30px;display:grid;gap:12px">
-        <div style="display:flex;justify-content:space-between;gap:16px;align-items:baseline;background:var(--glass);border:1px solid var(--glass-brd);border-radius:14px;padding:16px 22px;backdrop-filter:blur(12px)"><span style="font-size:clamp(15px,1.8vw,20px)">Конкурентный разбор 10 продуктов</span><span style="font-family:var(--mono);font-size:clamp(14px,1.6vw,18px);white-space:nowrap"><span style="color:var(--dim)">2 дня</span> → <span style="color:var(--mint)">~час</span></span></div>
-        <div style="display:flex;justify-content:space-between;gap:16px;align-items:baseline;background:var(--glass);border:1px solid var(--glass-brd);border-radius:14px;padding:16px 22px;backdrop-filter:blur(12px)"><span style="font-size:clamp(15px,1.8vw,20px)">Синтез 25 интервью в JTBD</span><span style="font-family:var(--mono);font-size:clamp(14px,1.6vw,18px);white-space:nowrap"><span style="color:var(--dim)">неделя</span> → <span style="color:var(--mint)">вечер</span></span></div>
-        <div style="display:flex;justify-content:space-between;gap:16px;align-items:baseline;background:var(--glass);border:1px solid var(--glass-brd);border-radius:14px;padding:16px 22px;backdrop-filter:blur(12px)"><span style="font-size:clamp(15px,1.8vw,20px)">Черновик PRD на фичу</span><span style="font-family:var(--mono);font-size:clamp(14px,1.6vw,18px);white-space:nowrap"><span style="color:var(--dim)">6 часов</span> → <span style="color:var(--mint)">~час</span></span></div>
-        <div style="display:flex;justify-content:space-between;gap:16px;align-items:baseline;background:var(--glass);border:1px solid var(--glass-brd);border-radius:14px;padding:16px 22px;backdrop-filter:blur(12px)"><span style="font-size:clamp(15px,1.8vw,20px)">Лендинг для теста спроса</span><span style="font-family:var(--mono);font-size:clamp(14px,1.6vw,18px);white-space:nowrap"><span style="color:var(--dim)">спринт</span> → <span style="color:var(--mint)">вечер</span></span></div>
-      </div>
-      <p class="dim r" style="margin-top:16px;font-size:14px">Мои замеры, порядок величин — не бенчмарк.</p>
-    </div>
-  </section>
-
-  <!-- 5 DEMO (product) -->
-  <section class="slide" data-notes="Продуктовое демо, не про код. Дай терминалу допечатать. Смысл: продуктовую задачу словами → готовый разбор боли и JTBD. Это бьёт прямо в работу продакта и ломает миф «ИИ = кодинг».">
-    <div class="wrap">
-      <div class="kicker r">Как это выглядит</div>
-      <h2 class="r">Отзывы → <span class="grad">кластеры боли и JTBD</span></h2>
-      <p class="lead r">Не «напиши код». Продуктовая задача обычными словами — на выходе готовый разбор.</p>
+      <div class="kicker r">Тема 2 · Claude Code</div>
+      <h2 class="r">Клод через <span class="grad">терминал</span> — делает, а не советует</h2>
+      <p class="lead r">Не чат с копипастом, а Claude Code: видит файлы, правит сам, запускает и деплоит. Задачу пишу словами — получаю готовый результат.</p>
       <div class="term r">
         <div class="bar"><i class="dotr"></i><i class="doty"></i><i class="dotg"></i><span>miron@mac — claude</span></div>
         <div class="body" id="typed"></div>
@@ -233,66 +225,53 @@ kbd{font-family:var(--mono);border:1px solid var(--line);border-bottom-width:2px
     </div>
   </section>
 
-  <!-- 6 THE SKILL: bad vs good prompt -->
-  <section class="slide" data-notes="Главный переносимый навык. Покажи разницу вживую. Хорошая постановка задачи ИИ = хороший PRD/бриф. Плохой результат почти всегда = плохой вопрос, а не тупой ИИ.">
+  <!-- 5 ПОЧЕМУ ЗАЛИПАЕТ -->
+  <section class="slide" data-notes="Тема 3. Честно: Клод не всегда быстрый. Три причины + как расклинить. Главное: залипание почти всегда = моя вина в постановке. /clear и конкретика лечат 90%.">
     <div class="wrap">
-      <div class="kicker r">Главный навык</div>
-      <h2 class="r">90% провалов ИИ — не его вина, а <span class="grad">вопроса</span></h2>
-      <div class="grid g2 r">
-        <div class="card" data-tilt style="border-color:rgba(255,120,120,.22)"><span class="ico">🙅</span><h3>Плохо</h3><p style="font-family:var(--mono);font-size:13.5px;line-height:1.6">«проанализируй конкурентов»</p><p style="margin-top:10px">→ вода, общие слова, бесполезно</p></div>
-        <div class="card" data-tilt style="border-color:rgba(94,234,212,.3)"><span class="ico">🎯</span><h3>Хорошо</h3><p style="font-family:var(--mono);font-size:13.5px;line-height:1.6">«вот 8 конкурентов и наши 3 JTBD — построй матрицу: кто закрывает какой job, где дыра для нас»</p><p style="margin-top:10px">→ готовая матрица и вывод</p></div>
-      </div>
-      <p class="lead r" style="margin-top:24px">Хорошая постановка задачи ИИ = хороший PRD. Навык, который у тебя уже есть.</p>
-    </div>
-  </section>
-
-  <!-- 7 SETUP compressed -->
-  <section class="slide" data-notes="Сетап сжат в один слайд и подан как опциональное «под капотом». Явно скажи: начать можно из чата, стек не обязателен — чтобы не поднять порог входа.">
-    <div class="wrap">
-      <div class="kicker r">Под капотом · опционально</div>
-      <h2 class="r">Мой стек за <span class="grad">60 секунд</span></h2>
-      <div class="grid g2 r">
-        <div class="card" data-tilt><span class="ico">🧠</span><h3>Обсидиан = память</h3><p>Один файл-контекст о твоём продукте. Кидаю папку — ИИ в теме за секунды, не пересказываю.</p></div>
-        <div class="card" data-tilt><span class="ico">⌨️</span><h3>Claude Code = делает</h3><p>В терминале: видит файлы, правит сам, запускает. Не советует — делает.</p></div>
-      </div>
-      <p class="lead r" style="margin-top:24px">Но начать можно прямо из чата в браузере — стек не обязателен.</p>
-    </div>
-  </section>
-
-  <!-- 8 SKILLS in action -->
-  <section class="slide" data-notes="Самый ценный для продактов слайд. НЕ список — покажи один живой ввод→вывод. Продуктовые фреймворки по команде /имя. Полный арсенал — на сайте, раздел «Скиллы».">
-    <div class="wrap">
-      <div class="kicker r">Для продактов</div>
-      <h2 class="r">Продуктовые фреймворки <span class="grad">по команде</span></h2>
-      <div class="mono-block r"><b>/jobs-to-be-done</b>
-
-ввод:  5 заметок с интервью
-────────────────────────────
-вывод: <span style="color:#5eead4">✔ 5 JTBD «когда… хочу… чтобы…»</span>
-       <span style="color:#5eead4">✔ сила боли по каждому</span>
-       <span style="color:#5eead4">✔ чем закрывают сейчас → где дыра</span></div>
-      <p class="lead r" style="margin-top:22px">/product-strategy · /continuous-discovery · /mom-test · /ab-testing · /pricing — <b class="muted">50+ в разделе «Скиллы»</b>.</p>
-    </div>
-  </section>
-
-  <!-- 9 HONEST / where not to trust -->
-  <section class="slide" data-notes="Честный слайд = доверие = дифференциация (этого нет у хайп-толков). Признай границы. Спроси зал руками: у кого ИИ уже уверенно врал? Поднятые руки усиливают доверие.">
-    <div class="wrap">
-      <div class="kicker r">Честно</div>
-      <h2 class="r">Где ИИ <span class="grad">нельзя</span> доверять вслепую</h2>
+      <div class="kicker r">Тема 3 · Залипание</div>
+      <h2 class="r">Почему Клод <span class="grad">залипает</span> над задачей</h2>
       <div class="grid g3 r">
-        <div class="card" data-tilt><span class="ico">👻</span><h3>Цифры рынка</h3><p>Размер рынка, доли, факты о конкурентах — уверенно врёт. Проверяй по источникам.</p></div>
-        <div class="card" data-tilt><span class="ico">🎯</span><h3>Ставки и приоритеты</h3><p>Решение на реальных данных и стратегия — за тобой. ИИ — черновик, не оракул.</p></div>
-        <div class="card" data-tilt><span class="ico">🗣</span><h3>Клиенты</h3><p>Реальные интервью не заменить. ИИ помогает синтезировать, а не выдумывать людей.</p></div>
+        <div class="card" data-tilt><span class="num">причина 1</span><h3>Контекст переполнен</h3><p>Перечитывает гору текста на каждый шаг. → <b style="color:#c7c7cc">/clear</b> на новую задачу.</p></div>
+        <div class="card" data-tilt><span class="num">причина 2</span><h3>Задача размыта</h3><p>«Сделай красиво» → гадает вслепую. → Ставь конкретно, дай контекст.</p></div>
+        <div class="card" data-tilt><span class="num">причина 3</span><h3>Ходит по кругу</h3><p>Ошибка → фикс → новая ошибка. → Esc, переформулируй, дроби на шаги.</p></div>
       </div>
-      <p class="dim r" style="margin-top:20px;font-size:15px">Мелочи: залипает → <b style="color:#c7c7cc">/clear</b> + конкретнее. Жжёт токены → модель под задачу.</p>
     </div>
   </section>
 
-  <!-- 10 BONUS reveal (payoff of the hook) -->
-  <section class="slide" data-notes="Пейофф хука из слайда 1. Пауза: «помните, я сказал, что презентацию собрал не я?» Прочитай промпт вслух, нажми «Копировать» — предложи забрать. Мета: медиум и есть сообщение.">
+  <!-- 6 ТОКЕНЫ -->
+  <section class="slide" data-notes="Тема 4. Токен ≈ кусочек слова, платишь за всё, что ИИ читает и пишет. Чем длиннее контекст — дороже и медленнее каждый шаг. Русский ~вдвое дороже. 4 приёма экономии.">
     <div class="wrap">
-      <div class="kicker r">🎁 Помнишь вопрос в начале?</div>
+      <div class="kicker r">Тема 4 · Токены</div>
+      <h2 class="r">Как не <span class="grad">жечь токены</span></h2>
+      <p class="lead r">Токен ≈ кусочек слова. ИИ платит за всё, что читает и пишет — чем больше тащишь контекст, тем дороже и медленнее каждый шаг.</p>
+      <div class="grid g4 r">
+        <div class="card" data-tilt><span class="ico">🎯</span><h3>Модель под задачу</h3><p>Не пушкой по воробьям</p></div>
+        <div class="card" data-tilt><span class="ico">🧹</span><h3><code>/clear</code></h3><p>Не тащи весь день в одной сессии</p></div>
+        <div class="card" data-tilt><span class="ico">✍️</span><h3>Точный промпт</h3><p>Меньше итераций вслепую</p></div>
+        <div class="card" data-tilt><span class="ico">📎</span><h3>Только нужное</h3><p>Не весь проект, если задача в одном файле</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 ЧТО ДАЁТ ПРОДАКТУ -->
+  <section class="slide" data-notes="Мостик «зачем вам». Не только код: на каждом этапе продакта есть что делегировать. Главный навык — точно ставить задачу (= хороший PRD). Кто освоит — обгонит.">
+    <div class="wrap">
+      <div class="kicker r">Зачем это вам</div>
+      <h2 class="r">Идея → <span class="grad">рабочий артефакт</span> за вечер</h2>
+      <div class="grid g4 r">
+        <div class="card" data-tilt><span class="ico">🧪</span><h3>Прототип фичи</h3><p>Проверить идею руками</p></div>
+        <div class="card" data-tilt><span class="ico">🛬</span><h3>Лендинг под тест</h3><p>Спрос без разработки</p></div>
+        <div class="card" data-tilt><span class="ico">📊</span><h3>Разбор метрик</h3><p>Данные на человеческом языке</p></div>
+        <div class="card" data-tilt><span class="ico">📝</span><h3>PRD и ресёрч</h3><p>Дискавери, конкуренты</p></div>
+      </div>
+      <p class="lead r" style="margin-top:28px">Главный навык — точно ставить задачу. Это и есть работа продакта — только теперь она сразу превращается в результат.</p>
+    </div>
+  </section>
+
+  <!-- 8 БОНУС -->
+  <section class="slide" data-notes="Бонус — обещанный. Пауза: как думаете, в чём и за сколько я собрал эту презентацию? Раскрой: один HTML от Клода по одному запросу. Прочитай промпт, нажми «Копировать» — предложи забрать.">
+    <div class="wrap">
+      <div class="kicker r">🎁 Бонус · интерактивный HTML одним запросом</div>
       <h2 class="r">Эта презентация — <span class="grad">один HTML от Клода</span></h2>
       <p class="lead r">Аврора, частицы, живой терминал, анимации — по одному описанию. Открывается двойным кликом, работает офлайн, задеплоена за минуту.</p>
       <div class="mono-block r"><b>Промпт был такой (мой, дословно):</b>
@@ -312,26 +291,42 @@ styles.refero.design, 21st.dev, reactbits.dev).
     </div>
   </section>
 
-  <!-- 11 TAKE-HOME KIT + сегодня -->
-  <section class="slide" data-notes="Забираемый актив + действие. Дай ссылку/QR на раздел «Скиллы»: готовые промпты + 50+ скиллов + этот дек. Порог входа = ноль. Три шага сделай сегодня, а не «когда-нибудь».">
+  <!-- 9 СКИЛЛЫ -->
+  <section class="slide" data-notes="Мостик к скиллам. Скилл = готовый навык по команде /имя. Собрал 50+ под продуктовые задачи. Полный список и промпты — на том же сайте, раздел «Скиллы» (дай ссылку в конце).">
     <div class="wrap">
-      <div class="kicker r">Забери</div>
-      <h2 class="r">Промпты и скиллы — <span class="grad">уже готовы</span></h2>
-      <p class="lead r">Раздел «Скиллы» на этом сайте: 50+ скиллов под продуктовые задачи + готовые промпты + сам этот дек. Забирай и применяй.</p>
-      <div class="flow r">
-        <div class="step"><span class="n">01</span><h4>🧠 Заметка-контекст</h4><p>Опиши свой продукт в одном файле для ИИ</p><span class="arrow">→</span></div>
-        <div class="step"><span class="n">02</span><h4>🎯 Делегируй сегодня</h4><p>Один реальный дискавери-таск, прямо сейчас</p><span class="arrow">→</span></div>
-        <div class="step"><span class="n">03</span><h4>📏 Замерь</h4><p>Сколько заняло бы вручную vs с ИИ</p></div>
+      <div class="kicker r">Для продактов</div>
+      <h2 class="r">50+ скиллов под <span class="grad">продуктовые задачи</span></h2>
+      <p class="lead r">Скилл — готовый навык Клода по команде <b class="muted">/имя</b>. Вместо длинного промпта — одно слово, за которым проверенный фреймворк.</p>
+      <div class="grid g4 r">
+        <div class="card" data-tilt><span class="ico">🧭</span><h3>Стратегия</h3><p><code>/product-strategy</code> · <code>/jobs-to-be-done</code></p></div>
+        <div class="card" data-tilt><span class="ico">🔎</span><h3>Дискавери</h3><p><code>/continuous-discovery</code> · <code>/mom-test</code></p></div>
+        <div class="card" data-tilt><span class="ico">📈</span><h3>Рост</h3><p><code>/ab-testing</code> · <code>/pricing</code></p></div>
+        <div class="card" data-tilt><span class="ico">📣</span><h3>Упаковка</h3><p><code>/product-marketing</code> · <code>/copywriting</code></p></div>
       </div>
+      <p class="lead r" style="margin-top:26px">Полный арсенал и готовые промпты — на этом сайте, раздел <b class="muted">«Скиллы»</b>.</p>
     </div>
   </section>
 
-  <!-- 12 FINALE -->
-  <section class="slide" data-notes="Финал — петля неприятия потерь до последней секунды. Не лозунг, а выбор, который зал делает про себя. Спасибо, вопросы.">
+  <!-- 10 ЧТО СДЕЛАТЬ -->
+  <section class="slide" data-notes="Призыв к действию. Три конкретных шага на сегодня-завтра. Чем ниже порог — тем больше реально начнут.">
+    <div class="wrap">
+      <div class="kicker r">С чего начать</div>
+      <h2 class="r">Что сделать <span class="grad">на этой неделе</span></h2>
+      <div class="flow r">
+        <div class="step"><span class="n">01</span><h4>🚀 Открой Клода</h4><p>Чат или Claude Code — поставь и залогинься</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">02</span><h4>🧠 Заметка-контекст</h4><p>Опиши свой продукт в одном файле для ИИ</p><span class="arrow">→</span></div>
+        <div class="step"><span class="n">03</span><h4>🎯 Делегируй задачу</h4><p>Одну реальную. Точно поставь — оцени результат</p></div>
+      </div>
+      <p class="lead r" style="margin-top:34px">Один вечер эксперимента экономит недели рутины дальше.</p>
+    </div>
+  </section>
+
+  <!-- 11 ФИНАЛ -->
+  <section class="slide" data-notes="Финал. ИИ не заменяет продакта — множит того, кто умеет ставить вопрос. Спасибо, вопросы. Дай ссылку на сайт (дек + скиллы).">
     <div class="wrap" style="text-align:center">
       <div class="kicker r" style="justify-content:center">Спасибо</div>
-      <h1 class="r">Два типа продактов.<br><span class="grad">В каком будешь ты?</span></h1>
-      <p class="lead r" style="margin:26px auto 30px;text-align:center">Разрыв не в знаниях — в рычаге. И он у тебя уже под рукой.</p>
+      <h1 class="r"><span class="grad">Продукт делают</span><br>вопросом, а не кодом</h1>
+      <p class="lead r" style="margin:26px auto 30px;text-align:center">ИИ не заменяет продакта — он множит того, кто умеет ставить вопрос. Начни на этой неделе.</p>
       <div class="r"><span class="cta" style="cursor:default">Вопросы? →</span></div>
     </div>
   </section>
@@ -342,7 +337,7 @@ styles.refero.design, 21st.dev, reactbits.dev).
 <div class="nav-zone right" id="navR"></div>
 
 <div id="hud"><div id="dots"></div></div>
-<div id="count">01 / 12</div>
+<div id="count">01 / 11</div>
 <div id="hint"><kbd>←</kbd> <kbd>→</kbd> листать · <kbd>F</kbd> фулскрин · <kbd>S</kbd> заметки</div>
 
 <script>
